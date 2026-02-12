@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,62 +7,171 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #050609; --sidebar: #0b0d13; --card: #0e111a; --accent: #5865f2; --border: rgba(255, 255, 255, 0.06); --text-muted: #6e727d; }
-        body { margin: 0; font-family: 'Manrope', sans-serif; background: var(--bg); color: #fff; padding: 20px; }
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: 15px; padding: 15px; margin-bottom: 15px; text-align: center; }
-        .card img { max-width: 100px; }
-        .buy-btn { width: 100%; background: var(--accent); border: none; color: #fff; padding: 12px; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .input-field { width: 100%; background: var(--sidebar); border: 1px solid var(--border); padding: 12px; border-radius: 8px; color: #fff; margin-bottom: 10px; box-sizing: border-box; }
-        #order-form { display: none; background: var(--sidebar); padding: 20px; border-radius: 15px; border: 1px solid var(--accent); }
+        :root {
+            --bg: #050609;
+            --sidebar: #0b0d13;
+            --card: #0e111a;
+            --accent: #5865f2;
+            --border: rgba(255, 255, 255, 0.06);
+            --text-muted: #6e727d;
+            --success: #2ecc71;
+        }
+
+        body { margin: 0; font-family: 'Manrope', sans-serif; background: var(--bg); color: #fff; display: flex; flex-direction: column; overflow-x: hidden; }
+
+        /* АДАПТИВНОЕ МЕНЮ ДЛЯ ТЕЛЕФОНА */
+        .sidebar { width: 100%; background: var(--sidebar); border-bottom: 1px solid var(--border); padding: 15px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .logo { font-size: 20px; font-weight: 800; color: #fff; text-decoration: none; width: 100%; text-align: center; margin-bottom: 10px; }
+        .logo span { color: var(--accent); }
+        
+        .nav-link { padding: 8px 12px; border-radius: 10px; color: var(--text-muted); text-decoration: none; font-weight: 600; cursor: pointer; font-size: 13px; background: rgba(255,255,255,0.03); }
+        .nav-link.active { background: var(--accent); color: #fff; }
+
+        /* MAIN CONTENT */
+        .main { padding: 20px; box-sizing: border-box; }
+        .search-bar { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 12px; color: #fff; margin-bottom: 20px; box-sizing: border-box; }
+
+        .section-title { font-size: 18px; font-weight: 800; margin: 20px 0 15px; border-left: 4px solid var(--accent); padding-left: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+        /* CARD */
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 12px; display: flex; flex-direction: column; align-items: center; }
+        .img-wrap { width: 100%; height: 100px; display: flex; align-items: center; justify-content: center; }
+        .img-wrap img { max-width: 80px; max-height: 80px; }
+        .name { font-size: 13px; font-weight: 700; margin: 10px 0; text-align: center; height: 32px; overflow: hidden; }
+        
+        .buy-btn { width: 100%; background: var(--accent); border: none; color: #fff; padding: 10px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 12px; }
+
+        /* MODALS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: var(--sidebar); border: 1px solid var(--border); border-radius: 20px; width: 90%; padding: 20px; box-sizing: border-box; }
+        
+        .cart-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .cart-item img { width: 40px; }
+        .total-area { margin-top: 15px; font-weight: 800; font-size: 18px; text-align: right; }
+        .input-field { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: #fff; margin-top: 10px; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
-    <div id="shop-container">
-        <h2>Магазин Bringer</h2>
-        <div class="card">
-            <img src="https://vignette.wikia.nocookie.net/murder-mystery-2/images/4/4d/Gingerscope.png">
-            <h3>Gingerscope</h3>
-            <p>Цена: 7450 $</p>
-            <button class="buy-btn" onclick="showForm('Gingerscope', 7450)">Купить</button>
+    <aside class="sidebar">
+        <a href="#" class="logo">Bringer <span>Shop</span></a>
+        <div class="nav-link active" data-cat="all" onclick="showCat('all')">Все</div>
+        <div class="nav-link" onclick="toggleCart()">🛒 Корзина (<span id="cart-count">0</span>)</div>
+        <div class="nav-link" data-cat="pistols" onclick="showCat('pistols')">Пистолеты</div>
+        <div class="nav-link" data-cat="godly" onclick="showCat('godly')">Ножи</div>
+    </aside>
+
+    <main class="main">
+        <input type="text" class="search-bar" id="search" placeholder="Поиск предметов...">
+        <div id="content"></div>
+    </main>
+
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <h2>Корзина</h2>
+            <div id="cart-items-list"></div>
+            <div class="total-area">Итого: <span id="total-price">0 $</span></div>
+            <button class="buy-btn" style="margin-top:20px" onclick="openOrderForm()">Оформить</button>
+            <button class="buy-btn" style="background:transparent" onclick="toggleCart()">Закрыть</button>
         </div>
     </div>
 
-    <div id="order-form">
-        <h3>Оформление заказа</h3>
-        <p id="item-name-display"></p>
-        <input type="text" id="rbx-nick" class="input-field" placeholder="Ваш ник в Roblox">
-        <button class="buy-btn" onclick="confirmOrder()">Подтвердить заказ</button>
-        <button class="buy-btn" style="background: grey;" onclick="location.reload()">Назад</button>
+    <div class="modal" id="order-modal">
+        <div class="modal-content">
+            <h2>Данные заказа</h2>
+            <input type="text" id="rbx-nick" class="input-field" placeholder="Ник в Roblox">
+            <textarea id="order-note" class="input-field" style="height: 60px" placeholder="Заметка"></textarea>
+            <button class="buy-btn" style="margin-top:20px" onclick="sendOrder()">ПОДТВЕРДИТЬ</button>
+            <button class="buy-btn" style="background:transparent" onclick="closeOrderForm()">Отмена</button>
+        </div>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        let selectedItem = "";
+        let cart = [];
+        const inventory = [
+            { id: "pistols", name: "Shark Gun", price: 115, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/c/ca/Shark.png" },
+            { id: "pistols", name: "Gingerscope", price: 7450, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/4/4d/Gingerscope.png" },
+            { id: "pistols", name: "Icepiercer", price: 425, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/8/8c/Icepiercer.png" },
+            { id: "godly", name: "Bat", price: 380, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/0/08/Bat.png" },
+            { id: "ancient", name: "Harvester", price: 540, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/b/b3/Harvester.png" }
+        ];
 
-        function showForm(name, price) {
-            selectedItem = name;
-            document.getElementById('shop-container').style.display = 'none';
-            document.getElementById('order-form').style.display = 'block';
-            document.getElementById('item-name-display').innerText = "Товар: " + name + " (" + price + "$)";
+        function addToCart(name) {
+            const item = inventory.find(i => i.name === name);
+            cart.push(item);
+            updateCartUI();
+            tg.HapticFeedback.impactOccurred('light');
         }
 
-        function confirmOrder() {
-            const nick = document.getElementById('rbx-nick').value.trim();
-            if (!nick) return alert("Введите ник!");
+        function updateCartUI() {
+            document.getElementById('cart-count').textContent = cart.length;
+            const list = document.getElementById('cart-items-list');
+            list.innerHTML = "";
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                list.innerHTML += `<div class="cart-item"><img src="${item.img}"> <span>${item.name}</span></div>`;
+            });
+            document.getElementById('total-price').textContent = total + " $";
+        }
+
+        function toggleCart() {
+            const m = document.getElementById('cart-modal');
+            m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function openOrderForm() {
+            if (cart.length === 0) return;
+            document.getElementById('cart-modal').style.display = 'none';
+            document.getElementById('order-modal').style.display = 'flex';
+        }
+
+        function closeOrderForm() { document.getElementById('order-modal').style.display = 'none'; }
+
+        // ГЛАВНАЯ ФУНКЦИЯ ОТПРАВКИ
+        function sendOrder() {
+            const rbx = document.getElementById('rbx-nick').value.trim();
+            if (!rbx) return alert("Введите ник Roblox!");
 
             const data = {
-                item: selectedItem,
-                roblox_nick: nick,
-                user: tg.initDataUnsafe?.user?.username || "Без ника"
+                items: cart.map(i => i.name).join(', '),
+                total: document.getElementById('total-price').textContent,
+                nickname: rbx,
+                note: document.getElementById('order-note').value
             };
 
-            // ЭТО САМАЯ ВАЖНАЯ ЧАСТЬ: данные улетают боту без ошибок сети!
+            // ОТПРАВЛЯЕМ ДАННЫЕ БОТУ (Окно закроется само)
             tg.sendData(JSON.stringify(data));
-            tg.close();
         }
+
+        function render(filter = 'all', query = '') {
+            const container = document.getElementById('content');
+            container.innerHTML = '<div class="grid"></div>';
+            const grid = container.querySelector('.grid');
+            
+            inventory.forEach(item => {
+                if ((filter === 'all' || item.id === filter) && item.name.toLowerCase().includes(query.toLowerCase())) {
+                    grid.innerHTML += `
+                        <div class="card">
+                            <div class="img-wrap"><img src="${item.img}"></div>
+                            <div class="name">${item.name}</div>
+                            <button class="buy-btn" onclick="addToCart('${item.name}')">${item.price} $</button>
+                        </div>`;
+                }
+            });
+        }
+
+        function showCat(id) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.cat === id));
+            render(id);
+        }
+
+        document.getElementById('search').addEventListener('input', (e) => render('all', e.target.value));
+        render();
     </script>
 </body>
 </html>
