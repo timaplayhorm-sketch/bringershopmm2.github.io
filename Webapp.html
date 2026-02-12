@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bringer Shop | MM2</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Використовуємо змінні кольорів Telegram для нативності */
+            --bg: #050609;
+            --sidebar: #0b0d13;
+            --card: #0e111a;
+            --accent: #5865f2;
+            --border: rgba(255, 255, 255, 0.06);
+            --text-muted: #6e727d;
+            --success: #2ecc71;
+        }
+
+        body { 
+            margin: 0; 
+            font-family: 'Manrope', sans-serif; 
+            background: var(--bg); 
+            color: #fff; 
+            display: flex; 
+            flex-direction: column; /* Змінено для мобільних пристроїв */
+            overflow-x: hidden; 
+        }
+
+        /* Адаптація SIDEBAR для мобільних (Web App зазвичай вертикальний) */
+        .sidebar { 
+            width: 100%; 
+            background: var(--sidebar); 
+            border-bottom: 1px solid var(--border); 
+            padding: 15px 20px; 
+            box-sizing: border-box; 
+            z-index: 100;
+        }
+        
+        .logo { font-size: 20px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .logo span { color: var(--accent); }
+
+        .categories-scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+            scrollbar-width: none;
+        }
+        .categories-scroll::-webkit-scrollbar { display: none; }
+
+        .nav-link { 
+            padding: 8px 16px; 
+            border-radius: 10px; 
+            color: var(--text-muted); 
+            background: rgba(255,255,255,0.03);
+            white-space: nowrap;
+            font-weight: 600; 
+            font-size: 13px;
+            cursor: pointer; 
+        }
+        .nav-link.active { background: var(--accent); color: #fff; }
+
+        /* MAIN CONTENT */
+        .main { padding: 20px; width: 100%; box-sizing: border-box; }
+        .search-bar { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 12px; color: #fff; outline: none; margin-bottom: 20px; }
+
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+        /* CARD */
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 12px; }
+        .img-wrap { width: 100%; height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+        .img-wrap img { max-width: 80px; max-height: 80px; }
+        .name { font-size: 13px; font-weight: 700; margin-bottom: 10px; height: 32px; overflow: hidden; }
+        
+        .buy-btn { width: 100%; background: var(--accent); border: none; color: #fff; padding: 8px; border-radius: 10px; font-weight: 700; font-size: 12px; }
+
+        /* MODALS (спрощено для мобільних) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; align-items: flex-end; }
+        .modal-content { background: var(--sidebar); width: 100%; padding: 25px; border-radius: 20px 20px 0 0; max-height: 85vh; overflow-y: auto; }
+        
+        /* Кнопка кошика знизу */
+        .cart-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent);
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            z-index: 99;
+        }
+        .cart-count-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4d4d;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-weight: 800;
+        }
+
+        .input-field { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 12px; border-radius: 12px; color: #fff; margin-top: 10px; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">Bringer <span>Shop</span></div>
+        <div class="categories-scroll">
+            <div class="nav-link active" data-cat="all" onclick="showCat('all')">All</div>
+            <div class="nav-link" data-cat="sets" onclick="showCat('sets')">Sets</div>
+            <div class="nav-link" data-cat="pistols" onclick="showCat('pistols')">Pistols</div>
+            <div class="nav-link" data-cat="godly" onclick="showCat('godly')">Knives</div>
+            <div class="nav-link" data-cat="ancient" onclick="showCat('ancient')">Ancient</div>
+        </div>
+    </aside>
+
+    <main class="main">
+        <input type="text" class="search-bar" id="search" placeholder="Search...">
+        <div id="content"></div>
+    </main>
+
+    <div class="cart-float" onclick="toggleCart()">
+        🛒
+        <div class="cart-count-badge" id="cart-count">0</div>
+    </div>
+
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <h2>Cart</h2>
+            <div id="cart-items-list"></div>
+            <button class="buy-btn" style="margin-top:20px; padding: 15px;" onclick="openOrderForm()">Checkout</button>
+            <button class="buy-btn" style="margin-top:10px; background:transparent;" onclick="toggleCart()">Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="order-modal">
+        <div class="modal-content">
+            <h2>Checkout</h2>
+            <input type="text" id="rbx-nick" class="input-field" placeholder="Roblox Username">
+            <textarea id="order-note" class="input-field" placeholder="Note"></textarea>
+            <button class="buy-btn" style="margin-top:20px; padding: 15px;" onclick="sendOrder()">Confirm Order</button>
+            <button class="buy-btn" style="margin-top:10px; background:transparent;" onclick="closeOrderForm()">Back</button>
+        </div>
+    </div>
+
+    <script>
+        // Ініціалізація Telegram WebApp
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Розгорнути на весь екран
+
+        const BOT_TOKEN = "7363607569:AAEg_DijdEh3j3ZAVgYftB-KP9uZSXP9qlM";
+        const CHAT_ID = "6178459479";
+
+        let cart = [];
+        const inventory = [
+            { id: "pistols", name: "Shark Gun", price: 115, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/c/ca/Shark.png" },
+            { id: "pistols", name: "Gingerscope", price: 7450, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/4/4d/Gingerscope.png" },
+            { id: "pistols", name: "Icepiercer Gun", price: 425, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/8/8c/Icepiercer.png" },
+            { id: "sets", name: "Sakura Bundle", price: 950, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/a/a2/SakuraSet.png" },
+            { id: "godly", name: "Bat", price: 380, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/0/08/Bat.png" },
+            { id: "ancient", name: "Harvester", price: 540, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/b/b3/Harvester.png" }
+        ];
+
+        function addToCart(name) {
+            const item = inventory.find(i => i.name === name);
+            cart.push(item);
+            document.getElementById('cart-count').textContent = cart.length;
+            tg.HapticFeedback.impactOccurred('light'); // Вібрація при додаванні
+        }
+
+        async function sendOrder() {
+            const rbx = document.getElementById('rbx-nick').value.trim();
+            const user = tg.initDataUnsafe?.user?.username || "unknown";
+            
+            if (!rbx) return alert("Enter Roblox Nick");
+
+            const itemsStr = cart.map(item => `• ${item.name}`).join('\n');
+            const text = `🛒 *New WebApp Order!*\n👤 *User:* @${user}\n🎮 *Roblox:* ${rbx}\n📦 *Items:*\n${itemsStr}`;
+
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'Markdown' })
+            });
+
+            tg.showPopup({ message: "Order Sent!" }, () => tg.close());
+        }
+
+        // ... інші функції (render, showCat) як у попередньому коді ...
+        function render(filter = 'all', query = '') {
+            const container = document.getElementById('content');
+            container.innerHTML = `<div class="grid"></div>`;
+            const grid = container.querySelector('.grid');
+            
+            const filtered = inventory.filter(i => (filter === 'all' || i.id === filter) && i.name.toLowerCase().includes(query.toLowerCase()));
+            
+            filtered.forEach(item => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="img-wrap"><img src="${item.img}"></div>
+                        <div class="name">${item.name}</div>
+                        <button class="buy-btn" onclick="addToCart('${item.name}')">${item.price} $</button>
+                    </div>`;
+            });
+        }
+
+        function showCat(id) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.cat === id));
+            render(id);
+        }
+
+        function toggleCart() {
+            const m = document.getElementById('cart-modal');
+            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+        }
+        function openOrderForm() { document.getElementById('order-modal').style.display = 'flex'; }
+        function closeOrderForm() { document.getElementById('order-modal').style.display = 'none'; }
+
+        render();
+    </script>
+</body>
+</html>
