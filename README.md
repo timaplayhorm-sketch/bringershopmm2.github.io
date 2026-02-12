@@ -1,1 +1,334 @@
-# bringershopmm2.github.io
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bringer Shop | MM2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050609;
+            --sidebar: #0b0d13;
+            --card: #0e111a;
+            --accent: #5865f2;
+            --border: rgba(255, 255, 255, 0.06);
+            --text-muted: #6e727d;
+            --success: #2ecc71;
+        }
+
+        body { margin: 0; font-family: 'Manrope', sans-serif; background: var(--bg); color: #fff; display: flex; overflow-x: hidden; }
+
+        /* SIDEBAR */
+        .sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); position: fixed; height: 100vh; padding: 30px 20px; box-sizing: border-box; z-index: 100; }
+        .logo { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 40px; display: flex; align-items: center; gap: 10px; text-decoration: none; letter-spacing: -0.5px; }
+        .logo span { color: var(--accent); }
+        
+        .nav-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1.5px; font-weight: 700; }
+        .nav-link { padding: 12px 15px; border-radius: 12px; color: var(--text-muted); text-decoration: none; font-weight: 600; display: block; margin-bottom: 8px; cursor: pointer; transition: 0.2s; position: relative; }
+        .nav-link.active, .nav-link:hover { background: rgba(88, 101, 242, 0.1); color: #fff; }
+
+        .cart-counter { position: absolute; right: 15px; background: var(--accent); color: #fff; font-size: 10px; padding: 2px 7px; border-radius: 20px; font-weight: 800; }
+
+        /* MAIN CONTENT */
+        .main { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
+        .search-bar { width: 100%; max-width: 500px; background: var(--card); border: 1px solid var(--border); padding: 14px 20px; border-radius: 16px; color: #fff; outline: none; margin-bottom: 40px; font-size: 15px; }
+
+        .section-title { font-size: 22px; font-weight: 800; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
+        .section-title::before { content: ''; width: 4px; height: 24px; background: var(--accent); border-radius: 4px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; margin-bottom: 50px; }
+
+        /* CARD */
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 18px; transition: 0.3s; }
+        .card:hover { border-color: var(--accent); transform: translateY(-6px); background: #11141e; }
+        .img-wrap { width: 100%; height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; background: radial-gradient(circle, rgba(88, 101, 242, 0.06) 0%, transparent 70%); border-radius: 18px; }
+        .img-wrap img { max-width: 130px; max-height: 130px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); }
+        .name { font-size: 15px; font-weight: 700; margin-bottom: 18px; height: 40px; overflow: hidden; }
+        
+        .buy-btn { width: 100%; background: var(--accent); border: none; color: #fff; padding: 12px; border-radius: 14px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .price-badge { background: rgba(0,0,0,0.25); padding: 4px 10px; border-radius: 8px; font-size: 13px; }
+
+        /* MODALS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-content { background: var(--sidebar); border: 1px solid var(--border); border-radius: 24px; width: 450px; padding: 30px; position: relative; max-height: 80vh; overflow-y: auto; }
+        .close-modal { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; color: var(--text-muted); }
+        
+        .cart-item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        .cart-item img { width: 50px; }
+        .cart-item-info { flex-grow: 1; }
+        .cart-item-name { font-weight: 700; font-size: 14px; }
+        .cart-item-price { color: var(--accent); font-weight: 800; font-size: 13px; }
+        .remove-item { color: #ff4d4d; cursor: pointer; font-size: 12px; font-weight: 700; }
+        
+        .promo-section { margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed var(--border); }
+        .promo-input-group { display: flex; gap: 8px; margin-top: 8px; }
+        .promo-input { flex-grow: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px; color: #fff; font-size: 12px; outline: none; }
+        .promo-btn { background: var(--accent); border: none; color: #fff; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 12px; }
+        .promo-msg { font-size: 11px; margin-top: 5px; display: none; }
+
+        .total-area { margin-top: 20px; display: flex; flex-direction: column; gap: 5px; font-weight: 800; font-size: 18px; border-top: 1px solid var(--border); padding-top: 15px; }
+        .discount-text { color: var(--success); font-size: 14px; display: none; }
+        
+        .checkout-btn { width: 100%; background: #fff; color: #000; padding: 15px; border-radius: 12px; border: none; font-weight: 800; margin-top: 20px; cursor: pointer; transition: 0.2s; }
+        .checkout-btn:hover { background: var(--accent); color: #fff; }
+
+        .input-field { width: 100%; background: var(--card); border: 1px solid var(--border); padding: 12px 15px; border-radius: 12px; color: #fff; margin-top: 15px; font-family: inherit; font-size: 14px; outline: none; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <a href="#" class="logo">Bringer <span>Shop</span></a>
+        
+        <div class="nav-label">Catalog</div>
+        <div class="nav-link active" data-cat="all" onclick="showCat('all')">All Items</div>
+        <div class="nav-link" onclick="toggleCart()">
+            <span>Cart</span>
+            <span class="cart-counter" id="cart-count">0</span>
+        </div>
+        
+        <div class="nav-label">Categories</div>
+        <div class="nav-link" data-cat="sets" onclick="showCat('sets')">Sets & Bundles</div>
+        <div class="nav-link" data-cat="pistols" onclick="showCat('pistols')">Pistols</div>
+        <div class="nav-link" data-cat="godly" onclick="showCat('godly')">Knives</div>
+        <div class="nav-link" data-cat="ancient" onclick="showCat('ancient')">Ancient</div>
+    </aside>
+
+    <main class="main">
+        <input type="text" class="search-bar" id="search" placeholder="Search items...">
+        <div id="content"></div>
+    </main>
+
+    <div class="modal" id="cart-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleCart()">&times;</span>
+            <h2>Your Cart</h2>
+            <div id="cart-items-list"></div>
+            
+            <div class="promo-section">
+                <span style="font-size: 12px; color: var(--text-muted);">Have a promo code?</span>
+                <div class="promo-input-group">
+                    <input type="text" class="promo-input" id="promo-field" placeholder="Enter code...">
+                    <button class="promo-btn" onclick="applyPromo()">OK</button>
+                </div>
+                <div id="promo-message" class="promo-msg"></div>
+            </div>
+
+            <div class="total-area">
+                <div id="discount-info" class="discount-text"></div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>Total:</span>
+                    <span id="total-price">0 $</span>
+                </div>
+            </div>
+            <button class="checkout-btn" onclick="openOrderForm()">Checkout</button>
+        </div>
+    </div>
+
+    <div class="modal" id="order-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeOrderForm()">&times;</span>
+            <h2>Order Details</h2>
+            <input type="text" id="tg-nick" class="input-field" placeholder="Telegram (@username)">
+            <input type="text" id="rbx-nick" class="input-field" placeholder="Roblox Username">
+            <textarea id="order-note" class="input-field" style="height: 80px; resize: none;" placeholder="Note (optional)"></textarea>
+            <button class="checkout-btn" onclick="sendOrder()">Confirm Order</button>
+        </div>
+    </div>
+
+    <script>
+        const BOT_TOKEN = "7363607569:AAEg_DijdEh3j3ZAVgYftB-KP9uZSXP9qlM"; 
+        const CHAT_ID = "6178459479"; 
+
+        const PROMO_CODES = {
+            'START': 10,
+            'BRINGER': 15,
+            'MM2': 5
+        };
+
+        const CATEGORY_NAMES = {
+            sets: "Sets & Bundles",
+            pistols: "Pistols",
+            godly: "Knives",
+            ancient: "Ancient"
+        };
+
+        let cart = [];
+        let appliedDiscount = 0;
+        let activePromo = "";
+
+        const inventory = [
+            { id: "pistols", name: "Shark Gun", price: 115, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/c/ca/Shark.png" },
+            { id: "pistols", name: "Gingerscope", price: 7450, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/4/4d/Gingerscope.png" },
+            { id: "pistols", name: "Icepiercer Gun", price: 425, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/8/8c/Icepiercer.png" },
+            { id: "sets", name: "Sakura Bundle", price: 950, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/a/a2/SakuraSet.png" },
+            { id: "godly", name: "Bat", price: 380, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/0/08/Bat.png" },
+            { id: "ancient", name: "Harvester", price: 540, img: "https://vignette.wikia.nocookie.net/murder-mystery-2/images/b/b3/Harvester.png" }
+        ];
+
+        function applyPromo() {
+            const input = document.getElementById('promo-field').value.trim().toUpperCase();
+            const msg = document.getElementById('promo-message');
+            
+            if (PROMO_CODES[input]) {
+                appliedDiscount = PROMO_CODES[input];
+                activePromo = input;
+                msg.style.display = "block";
+                msg.style.color = "var(--success)";
+                msg.textContent = `Promo applied! (-${appliedDiscount}%)`;
+                updateCartUI();
+            } else {
+                appliedDiscount = 0;
+                activePromo = "";
+                msg.style.display = "block";
+                msg.style.color = "#ff4d4d";
+                msg.textContent = "Invalid code";
+                updateCartUI();
+            }
+        }
+
+        function addToCart(name) {
+            const item = inventory.find(i => i.name === name);
+            cart.push(item);
+            updateCartUI();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').textContent = cart.length;
+            const list = document.getElementById('cart-items-list');
+            list.innerHTML = cart.length === 0 ? `<p style="color:var(--text-muted)">Your cart is empty</p>` : "";
+            
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                list.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.img}">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.price} $</div>
+                        </div>
+                        <div class="remove-item" onclick="removeFromCart(${index})">Remove</div>
+                    </div>`;
+            });
+
+            const discountInfo = document.getElementById('discount-info');
+            if (appliedDiscount > 0 && cart.length > 0) {
+                const discountAmount = (total * appliedDiscount) / 100;
+                total = total - discountAmount;
+                discountInfo.style.display = "block";
+                discountInfo.textContent = `Discount: -${discountAmount.toFixed(2)} $ (${activePromo})`;
+            } else {
+                discountInfo.style.display = "none";
+            }
+
+            document.getElementById('total-price').textContent = `${total.toFixed(2)} $`;
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function openOrderForm() {
+            if (cart.length === 0) return;
+            toggleCart();
+            document.getElementById('order-modal').style.display = 'flex';
+        }
+
+        function closeOrderForm() {
+            document.getElementById('order-modal').style.display = 'none';
+        }
+
+        async function sendOrder() {
+            const tg = document.getElementById('tg-nick').value.trim();
+            const rbx = document.getElementById('rbx-nick').value.trim();
+            const note = document.getElementById('order-note').value.trim();
+
+            if (!tg.startsWith('@')) return alert("Telegram username must start with @");
+            if (rbx === "") return alert("Please enter Roblox username");
+
+            const itemsStr = cart.map(item => `• ${item.name} (${item.price} $)`).join('\n');
+            let total = cart.reduce((sum, item) => sum + item.price, 0);
+            let promoTxt = "";
+
+            if (appliedDiscount > 0) {
+                const disc = (total * appliedDiscount) / 100;
+                total = total - disc;
+                promoTxt = `🎟 *Promo:* ${activePromo} (-${appliedDiscount}%)\n`;
+            }
+
+            const text = `🛒 *New Order!*\n\n` +
+                         `👤 *TG:* ${tg}\n` +
+                         `🎮 *Roblox:* ${rbx}\n` +
+                         `📝 *Note:* ${note || "none"}\n` +
+                         promoTxt + `\n` +
+                         `📦 *Items:*\n${itemsStr}\n\n` +
+                         `💰 *Total:* ${total.toFixed(2)} $`;
+
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'Markdown' })
+                });
+
+                if (response.ok) {
+                    alert("Order sent successfully!");
+                    cart = [];
+                    appliedDiscount = 0;
+                    activePromo = "";
+                    document.getElementById('promo-field').value = "";
+                    document.getElementById('promo-message').style.display = "none";
+                    updateCartUI();
+                    closeOrderForm();
+                } else {
+                    alert("Telegram API Error");
+                }
+            } catch (error) {
+                alert("Network Error");
+            }
+        }
+
+        function render(filter = 'all', query = '') {
+            const container = document.getElementById('content');
+            container.innerHTML = "";
+            const cats = filter === 'all' ? ['sets', 'pistols', 'godly', 'ancient'] : [filter];
+
+            cats.forEach(cat => {
+                const filtered = inventory.filter(i => i.id === cat && i.name.toLowerCase().includes(query.toLowerCase()));
+                if (filtered.length > 0) {
+                    let html = `<div class="section-title">${CATEGORY_NAMES[cat]}</div><div class="grid">`;
+                    filtered.forEach(item => {
+                        html += `
+                            <div class="card">
+                                <div class="img-wrap"><img src="${item.img}"></div>
+                                <div class="name">${item.name}</div>
+                                <button class="buy-btn" onclick="addToCart('${item.name}')">
+                                    Add <span class="price-badge">${item.price} $</span>
+                                </button>
+                            </div>`;
+                    });
+                    container.innerHTML += html + `</div>`;
+                }
+            });
+        }
+
+        function showCat(id) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.toggle('active', l.dataset.cat === id));
+            render(id, document.getElementById('search').value);
+        }
+
+        document.getElementById('search').addEventListener('input', (e) => {
+            const active = document.querySelector('.nav-link.active')?.dataset.cat || 'all';
+            render(active, e.target.value);
+        });
+
+        render();
+    </script>
+</body>
+</html>
