@@ -1,30 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<title>MM2 Shop</title>
 
-<title>LootPets</title>
-
-<link rel="preconnect"
-href="https://fonts.googleapis.com">
-
-<link rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-/*==========================================
-RESET
-==========================================*/
 
 *{
 margin:0;
@@ -33,1165 +17,355 @@ box-sizing:border-box;
 font-family:'Poppins',sans-serif;
 }
 
-html{
-
-scroll-behavior:smooth;
-
-}
-
 body{
 
-background:#06272b;
-
-color:#ffffff;
-
-overflow-x:hidden;
+background:
+linear-gradient(135deg,#0b0b0b,#171717,#202020);
 
 min-height:100vh;
+color:white;
 
 }
 
-/*==========================================
-SCROLLBAR
-==========================================*/
+header{
 
-::-webkit-scrollbar{
+width:100%;
+padding:25px;
 
-width:12px;
+background:#111;
 
-}
-
-::-webkit-scrollbar-track{
-
-background:#08363b;
-
-}
-
-::-webkit-scrollbar-thumb{
-
-background:#1dcfd7;
-
-border-radius:30px;
-
-}
-
-::-webkit-scrollbar-thumb:hover{
-
-background:#32e6ee;
-
-}
-
-/*==========================================
-LINKS
-==========================================*/
-
-a{
-
-text-decoration:none;
-
-color:inherit;
-
-}
-
-/*==========================================
-BUTTONS
-==========================================*/
-
-button{
-
-font-family:'Poppins',sans-serif;
-
-cursor:pointer;
-
-transition:.25s;
-
-}
-
-/*==========================================
-CONTAINER
-==========================================*/
-
-.container{
-
-width:90%;
-
-max-width:1800px;
-
-margin:auto;
-
-}
-
-/*==========================================
-HEADER
-==========================================*/
-
-.header{
+box-shadow:0 0 25px rgba(0,0,0,.5);
 
 position:sticky;
-
-top:20px;
-
-z-index:9999;
-
-width:90%;
-
-max-width:1800px;
-
-margin:25px auto;
-
-background:#4f7d79;
-
-border:3px solid white;
-
-border-radius:28px;
-
-padding:22px 40px;
-
-display:grid;
-
-grid-template-columns:1fr auto 1fr;
-
-align-items:center;
-
-backdrop-filter:blur(15px);
-
-box-shadow:0 20px 45px rgba(0,0,0,.30);
+top:0;
+z-index:999;
 
 }
 
-.left{
+header h1{
 
-justify-self:start;
+text-align:center;
+font-size:38px;
 
-}
-
-.center{
-
-justify-self:center;
-
-}
-
-.right{
-
-justify-self:end;
-
-}
-
-/*==========================================
-LOGO
-==========================================*/
-
-.logo{
-
-font-size:64px;
-
-font-weight:800;
-
-user-select:none;
-
-cursor:pointer;
-
-white-space:nowrap;
-
-}
-
-.logo .loot{
-
-color:#39f0f2;
-
-}
-
-.logo .pets{
-
-color:#ffffff;
-
-}
-
-.logo:hover{
-
-transform:scale(1.03);
-
-}
-
-/*==========================================
-HEADER BUTTONS
-==========================================*/
-
-.profile-btn,
-.lang-btn{
-
-width:220px;
-
-height:68px;
-
-background:#07565f;
+letter-spacing:2px;
 
 color:white;
 
-border:3px solid white;
+text-shadow:
 
-border-radius:18px;
+0 0 15px #00c3ff,
 
-font-size:20px;
-
-font-weight:700;
+0 0 30px #00c3ff;
 
 }
 
-.profile-btn:hover,
-.lang-btn:hover{
+.controls{
 
-background:#0d7078;
-
-transform:translateY(-2px);
-
-}
-
-/*==========================================
-LANGUAGE MENU
-==========================================*/
-
-.language{
-
-position:relative;
-
-z-index:99999;
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:15px;
+margin-top:25px;
 
 }
 
-.lang-menu{
+input{
 
-position:absolute;
+padding:14px 18px;
 
-top:82px;
+border:none;
 
-right:0;
+outline:none;
 
-width:220px;
+border-radius:12px;
 
-background:#07565f;
+background:#1e1e1e;
 
-border:3px solid white;
+color:white;
+
+width:280px;
+
+font-size:16px;
+
+transition:.3s;
+
+}
+
+input:focus{
+
+box-shadow:
+
+0 0 10px #00bfff;
+
+}
+
+select{
+
+padding:14px;
+
+border:none;
+
+outline:none;
+
+border-radius:12px;
+
+background:#1e1e1e;
+
+color:white;
+
+font-size:15px;
+
+cursor:pointer;
+
+}
+
+.container{
+
+max-width:1500px;
+
+margin:auto;
+
+padding:40px;
+
+display:grid;
+
+grid-template-columns:
+
+repeat(auto-fit,minmax(290px,1fr));
+
+gap:28px;
+
+}
+
+.card{
+
+background:#191919;
 
 border-radius:18px;
 
 overflow:hidden;
 
-display:none;
-
-box-shadow:0 20px 45px rgba(0,0,0,.35);
-
-animation:menu .25s;
-
-z-index:999999;
-
-}
-
-.lang-menu.show{
-
-display:block;
-
-}
-
-@keyframes menu{
-
-from{
-
-opacity:0;
-
-transform:translateY(-10px);
-
-}
-
-to{
-
-opacity:1;
-
-transform:translateY(0);
-
-}
-
-}
-
-.lang-item{
-
-padding:18px;
-
-text-align:center;
-
-font-size:18px;
-
-font-weight:600;
-
-cursor:pointer;
-
-transition:.2s;
-
-}
-
-.lang-item:hover{
-
-background:#0d7078;
-
-}
-
-.lang-item:not(:last-child){
-
-border-bottom:2px solid rgba(255,255,255,.18);
-
-}
-
-/*==========================================
-HERO
-==========================================*/
-
-.hero{
-
-width:90%;
-
-max-width:1800px;
-
-margin:80px auto;
-
-display:grid;
-
-grid-template-columns:1.1fr 1fr;
-
-gap:70px;
-
-align-items:center;
-
-}
-
-.hero-text h1{
-
-font-size:72px;
-
-font-weight:800;
-
-line-height:1.1;
-
-margin-bottom:25px;
-
-}
-
-.hero-text p{
-
-font-size:22px;
-
-line-height:1.8;
-
-color:#d7ffff;
-
-margin-bottom:40px;
-
-}
-
-.hero-buttons{
-
-display:flex;
-
-gap:20px;
-
-flex-wrap:wrap;
-
-}
-
-.start-btn{
-
-width:230px;
-
-height:65px;
-
-background:#18b7c3;
-
-border:3px solid white;
-
-border-radius:18px;
-
-color:white;
-
-font-size:20px;
-
-font-weight:700;
-
-}
-
-.start-btn:hover{
-
-background:#2bd8e3;
-
-transform:translateY(-3px);
-
-}
-
-.more-btn{
-
-width:210px;
-
-height:65px;
-
-background:transparent;
-
-border:3px solid white;
-
-border-radius:18px;
-
-color:white;
-
-font-size:20px;
-
-font-weight:700;
-
-}
-
-.more-btn:hover{
-
-background:white;
-
-color:#06272b;
-
-}
-
-.hero-image{
-
-display:flex;
-
-justify-content:center;
-
-}
-
-.hero-image img{
-
-width:100%;
-
-max-width:650px;
-
-border-radius:30px;
-
-border:3px solid white;
-
-box-shadow:0 25px 60px rgba(0,0,0,.35);
-
 transition:.35s;
 
-}
+box-shadow:
 
-.hero-image img:hover{
-
-transform:scale(1.02);
-
-}
-
-/*==========================================
-SECTION TITLE
-==========================================*/
-
-.section-title{
-
-text-align:center;
-
-margin:120px 0 60px;
-
-}
-
-.section-title h2{
-
-font-size:52px;
-
-font-weight:800;
-
-margin-bottom:15px;
-
-}
-
-.section-title p{
-
-font-size:20px;
-
-color:#cfeeee;
-
-}
-
-/*==========================================
-MODAL
-==========================================*/
-
-.modal{
-
-position:fixed;
-
-left:0;
-
-top:0;
-
-width:100%;
-
-height:100%;
-
-background:rgba(0,0,0,.75);
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-opacity:0;
-
-visibility:hidden;
-
-transition:.3s;
-
-z-index:1000000;
-
-}
-
-.modal.show{
-
-opacity:1;
-
-visibility:visible;
-
-}
-
-.modal-window{
-
-width:500px;
-
-max-width:95%;
-
-background:#08383d;
-
-border:3px solid white;
-
-border-radius:30px;
-
-padding:35px;
+0 0 20px rgba(0,0,0,.5);
 
 position:relative;
 
-box-shadow:0 30px 70px rgba(0,0,0,.45);
+}
+
+.card:hover{
+
+transform:
+
+translateY(-10px)
+
+scale(1.03);
+
+box-shadow:
+
+0 0 30px rgba(0,195,255,.45);
 
 }
 
-/*==========================================
-MODAL CONTENT
-==========================================*/
+.card img{
 
-.modal-logo{
+width:100%;
+height:280px;
 
-text-align:center;
+object-fit:contain;
 
-font-size:44px;
+padding:20px;
 
-font-weight:800;
-
-margin-bottom:15px;
+background:#141414;
 
 }
 
-.modal h2{
+.card-content{
 
-text-align:center;
+padding:20px;
 
-font-size:34px;
+}
+
+.card h2{
+
+font-size:26px;
 
 margin-bottom:10px;
 
 }
 
-.modal-subtitle{
+.category{
 
-text-align:center;
+display:inline-block;
 
-color:#d7ffff;
+padding:6px 12px;
 
-margin-bottom:30px;
+border-radius:30px;
 
-line-height:1.7;
+font-size:13px;
 
-}
+margin-bottom:15px;
 
-.close-modal{
-
-position:absolute;
-
-top:20px;
-
-right:22px;
-
-background:none;
-
-border:none;
-
-color:white;
-
-font-size:30px;
-
-cursor:pointer;
+font-weight:bold;
 
 }
 
-.input-group{
+.Unique{
 
-margin-bottom:22px;
-
-}
-
-.input-group label{
-
-display:block;
-
-margin-bottom:8px;
-
-font-weight:600;
+background:#7b7411;
 
 }
 
-.input-group input{
+.Godly{
 
-width:100%;
+background:#ff3c3c;
 
-height:58px;
+}
 
-padding:0 18px;
+.Ancient{
 
-background:#135b55;
+background:#7a32ff;
 
-border:3px solid white;
+}
 
-border-radius:15px;
+.Vintage{
 
-font-size:17px;
+background:#ffaa00;
+
+}
+
+.Chroma{
+
+background:linear-gradient(
+90deg,
+#ff3b3b,
+#ff9800,
+#ffe600,
+#4caf50,
+#00bfff,
+#7a32ff,
+#ff3b3b
+);
+
+background-size:400%;
+
+animation:chroma 5s linear infinite;
 
 color:white;
 
 }
 
-.input-group input::placeholder{
-
-color:#bfecec;
-
-}
-
-.register-btn{
-
-width:100%;
-
-height:60px;
-
-background:#18b7c3;
-
-border:3px solid white;
-
-border-radius:15px;
+.price{
 
 font-size:20px;
 
-font-weight:700;
+margin:12px 0;
 
-color:white;
+font-weight:bold;
 
-}
-
-.register-btn:hover{
-
-background:#2bd8e3;
+color:#00e676;
 
 }
 
-.modal-bottom{
+.code{
 
-margin-top:22px;
+font-size:17px;
 
-text-align:center;
+color:#ddd;
 
-}
+margin-bottom:18px;
 
-.modal-bottom span{
-
-color:#39f0f2;
-
-font-weight:700;
-
-cursor:pointer;
+letter-spacing:2px;
 
 }
 
-/*==========================================
-GAMES
-==========================================*/
-
-.games{
-
-width:90%;
-
-max-width:1800px;
-
-margin:40px auto 100px;
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:35px;
-
-}
-
-.game-card{
-
-background:#135b55;
-
-border:3px solid white;
-
-border-radius:28px;
-
-overflow:hidden;
-
-transition:.3s;
-
-box-shadow:0 18px 45px rgba(0,0,0,.30);
-
-}
-
-.game-card:hover{
-
-transform:translateY(-8px);
-
-}
-
-.game-card img{
+button{
 
 width:100%;
 
-height:340px;
+padding:13px;
 
-object-fit:cover;
+border:none;
 
-display:block;
+border-radius:12px;
 
-}
-
-.game-info{
-
-padding:28px;
-
-}
-
-.game-info h3{
-
-font-size:34px;
-
-margin-bottom:12px;
-
-}
-
-.game-info p{
-
-font-size:18px;
-
-color:#d7ffff;
-
-line-height:1.7;
-
-margin-bottom:25px;
-
-}
-
-.game-btn{
-
-width:190px;
-
-height:55px;
-
-background:#18b7c3;
-
-border:3px solid white;
-
-border-radius:15px;
-
-font-size:18px;
-
-font-weight:700;
-
-color:white;
-
-}
-
-.game-btn:hover{
-
-background:#2bd8e3;
-
-}
-
-/*==========================================
-FEATURE CARDS
-==========================================*/
-
-.features{
-
-width:90%;
-
-max-width:1800px;
-
-margin:110px auto;
-
-display:grid;
-
-grid-template-columns:repeat(4,1fr);
-
-gap:25px;
-
-}
-
-.feature-card{
-
-background:#135b55;
-
-border:3px solid white;
-
-border-radius:25px;
-
-padding:30px;
-
-text-align:center;
-
-transition:.3s;
-
-}
-
-.feature-card:hover{
-
-transform:translateY(-8px);
-
-}
-
-.feature-icon{
-
-font-size:48px;
-
-margin-bottom:20px;
-
-}
-
-.feature-card h3{
-
-font-size:28px;
-
-margin-bottom:15px;
-
-}
-
-.feature-card p{
-
-color:#d7ffff;
-
-line-height:1.7;
-
-}
-
-/*==========================================
-FAQ
-==========================================*/
-
-.faq{
-
-width:90%;
-
-max-width:1800px;
-
-margin:120px auto;
-
-display:grid;
-
-gap:25px;
-
-}
-
-.faq-item{
-
-background:#135b55;
-
-border:3px solid white;
-
-border-radius:25px;
-
-padding:30px;
-
-transition:.3s;
-
-}
-
-.faq-item:hover{
-
-transform:translateY(-5px);
-
-}
-
-.faq-item h3{
-
-font-size:28px;
-
-margin-bottom:15px;
-
-}
-
-.faq-item p{
-
-font-size:18px;
-
-color:#d7ffff;
-
-line-height:1.8;
-
-}
-
-/*==========================================
-FOOTER
-==========================================*/
-
-.footer{
-
-margin-top:120px;
-
-padding:70px 20px;
-
-background:#08383d;
-
-border-top:3px solid white;
-
-text-align:center;
-
-}
-
-.footer-logo{
-
-font-size:48px;
-
-font-weight:800;
-
-margin-bottom:20px;
-
-}
-
-.footer-links{
-
-display:flex;
-
-justify-content:center;
-
-flex-wrap:wrap;
-
-gap:30px;
-
-margin-bottom:25px;
-
-}
-
-.footer-links a{
-
-transition:.25s;
-
-font-weight:500;
-
-}
-
-.footer-links a:hover{
-
-color:#39f0f2;
-
-}
-
-.footer-copy{
-
-color:#bfecec;
+cursor:pointer;
 
 font-size:16px;
 
-}
-
-/*==========================================
-TOP BUTTON
-==========================================*/
-
-.top-btn{
-
-position:fixed;
-
-right:30px;
-
-bottom:30px;
-
-width:60px;
-
-height:60px;
-
-border-radius:50%;
-
-border:3px solid white;
-
-background:#18b7c3;
-
-color:white;
-
-font-size:24px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-cursor:pointer;
-
-opacity:0;
-
-visibility:hidden;
+font-weight:bold;
 
 transition:.3s;
 
-z-index:9999;
+}
+
+.copy{
+
+background:#00bfff;
+
+color:white;
 
 }
 
-.top-btn.show{
+.copy:hover{
 
-opacity:1;
-
-visibility:visible;
+background:#0095cc;
 
 }
 
-.top-btn:hover{
-
-transform:translateY(-5px);
-
-background:#2bd8e3;
-
-}
-
-/*==========================================
-PRELOADER
-==========================================*/
-
-#preloader{
+.toast{
 
 position:fixed;
 
-left:0;
+bottom:30px;
 
-top:0;
+right:30px;
 
-width:100%;
+background:#111;
 
-height:100%;
+padding:15px 25px;
 
-background:#06272b;
+border-radius:12px;
 
-display:flex;
+box-shadow:
 
-justify-content:center;
-
-align-items:center;
-
-z-index:9999999;
-
-transition:.5s;
-
-}
-
-#preloader.hide{
+0 0 20px rgba(0,195,255,.5);
 
 opacity:0;
 
-visibility:hidden;
+pointer-events:none;
+
+transition:.35s;
 
 }
 
-.loader-logo{
+.toast.show{
 
-font-size:72px;
+opacity:1;
 
-font-weight:800;
-
-animation:pulse 1.2s infinite;
+transform:translateY(-10px);
 
 }
 
-@keyframes pulse{
+@media(max-width:700px){
 
-0%{transform:scale(1);}
+header h1{
 
-50%{transform:scale(1.08);}
-
-100%{transform:scale(1);}
+font-size:28px;
 
 }
 
-/*==========================================
-RESPONSIVE
-==========================================*/
+.container{
 
-@media(max-width:1100px){
-
-.header{
-
-grid-template-columns:1fr;
-
-gap:20px;
+padding:20px;
 
 }
 
-.left,
-.center,
-.right{
+.card img{
 
-justify-self:center;
-
-}
-
-.hero{
-
-grid-template-columns:1fr;
-
-text-align:center;
-
-}
-
-.hero-buttons{
-
-justify-content:center;
-
-}
-
-.games{
-
-grid-template-columns:1fr;
-
-}
-
-.features{
-
-grid-template-columns:1fr;
-
-}
-
-.logo{
-
-font-size:48px;
-
-}
-
-.hero-text h1{
-
-font-size:48px;
-
-}
-
-.hero-text p{
-
-font-size:19px;
+height:220px;
 
 }
 
@@ -1203,1089 +377,1684 @@ font-size:19px;
 
 <body>
 
-    <!--==========================================
-PRELOADER
-===========================================-->
+<header>
 
-<div id="preloader">
+<h1>⚔️ MM2 SELL ⚔️</h1>
 
-    <div class="loader-logo">
+<div class="controls">
 
-        <span class="loot">Loot</span><span class="pets">Pets</span>
+<input
+id="search"
+placeholder="🔍 Поиск предмета..."
+onkeyup="render()">
 
-    </div>
+<select
+id="category"
+onchange="render()">
 
-</div>
+<option value="All">Все категории</option>
 
-<!--==========================================
-REGISTER
-===========================================-->
+<option>Unique</option>
 
-<div class="modal" id="registerModal">
+<option>Ancient</option>
 
-    <div class="modal-window">
+<option>Vintage</option>
 
-        <button class="close-modal" id="closeRegister">✕</button>
+<option>Chroma</option>
 
-        <div class="modal-logo">
+<option>Godly</option>
 
-            <span class="loot">Loot</span><span class="pets">Pets</span>
-
-        </div>
-
-        <h2>Создать аккаунт</h2>
-
-        <p class="modal-subtitle">
-
-            Создайте аккаунт LootPets
-
-        </p>
-
-        <div class="input-group">
-
-            <label>Ник</label>
-
-            <input
-            id="registerNickname"
-            type="text"
-            placeholder="Введите ник">
-
-        </div>
-
-        <div class="input-group">
-
-            <label>Email</label>
-
-            <input
-            id="registerEmail"
-            type="email"
-            placeholder="Введите Email">
-
-        </div>
-
-        <div class="input-group">
-
-            <label>Пароль</label>
-
-            <input
-            id="registerPassword"
-            type="password"
-            placeholder="Введите пароль">
-
-        </div>
-
-        <div class="input-group">
-
-            <label>Повторите пароль</label>
-
-            <input
-            id="registerPassword2"
-            type="password"
-            placeholder="Повторите пароль">
-
-        </div>
-
-        <button
-        class="register-btn"
-        id="registerButton">
-
-            Зарегистрироваться
-
-        </button>
-
-        <div class="modal-bottom">
-
-            Уже есть аккаунт?
-
-            <span id="openLogin">
-
-                Войти
-
-            </span>
-
-        </div>
-
-    </div>
+</select>
 
 </div>
-
-<!--==========================================
-LOGIN
-===========================================-->
-
-<div class="modal" id="loginModal">
-
-    <div class="modal-window">
-
-        <button class="close-modal" id="closeLogin">✕</button>
-
-        <div class="modal-logo">
-
-            <span class="loot">Loot</span><span class="pets">Pets</span>
-
-        </div>
-
-        <h2>Вход</h2>
-
-        <p class="modal-subtitle">
-
-            Войдите в свой аккаунт
-
-        </p>
-
-        <div class="input-group">
-
-            <label>Ник или Email</label>
-
-            <input
-            id="loginUser"
-            type="text"
-            placeholder="Введите ник или Email">
-
-        </div>
-
-        <div class="input-group">
-
-            <label>Пароль</label>
-
-            <input
-            id="loginPassword"
-            type="password"
-            placeholder="Введите пароль">
-
-        </div>
-
-        <button
-        class="register-btn"
-        id="loginButton">
-
-            Войти
-
-        </button>
-
-        <div class="modal-bottom">
-
-            Нет аккаунта?
-
-            <span id="openRegister">
-
-                Зарегистрироваться
-
-            </span>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!--==========================================
-HEADER
-===========================================-->
-
-<header class="header">
-
-    <div class="left">
-
-        <button class="profile-btn">
-
-            👤 Профиль
-
-        </button>
-
-    </div>
-
-    <div class="center">
-
-        <div class="logo">
-
-            <span class="loot">Loot</span><span class="pets">Pets</span>
-
-        </div>
-
-    </div>
-
-    <div class="right">
-
-        <div class="language">
-
-            <button
-            class="lang-btn"
-            id="langButton">
-
-                Русский ▼
-
-            </button>
-
-            <div
-            class="lang-menu"
-            id="langMenu">
-
-                <div class="lang-item">Русский</div>
-
-                <div class="lang-item">English</div>
-
-                <div class="lang-item">Українська</div>
-
-            </div>
-
-        </div>
-
-    </div>
 
 </header>
 
-<!--==========================================
-HERO
-===========================================-->
+<div class="container" id="shop"></div>
 
-<section class="hero">
-
-    <div class="hero-text">
-
-        <span class="hero-badge">
-
-            🛡️ Безопасный маркетплейс игровых предметов
-
-        </span>
-
-        <h1>
-
-            Покупайте и продавайте игровые предметы безопасно
-
-        </h1>
-
-        <p>
-
-            LootPets — современный маркетплейс, где игроки смогут покупать и продавать игровые предметы с безопасными сделками, удобным интерфейсом и быстрой поддержкой.
-
-        </p>
-
-        <div class="hero-buttons">
-
-            <button class="start-btn">
-
-                Начать покупки
-
-            </button>
-
-            <button class="more-btn">
-
-                Подробнее
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <div class="hero-image">
-
-        <img src="images/hero.png" alt="LootPets">
-
-    </div>
-
-</section>
-
-<!--==========================================
-POPULAR GAMES
-===========================================-->
-
-<div class="section-title">
-
-    <h2>
-
-        Популярные игры
-
-    </h2>
-
-    <p>
-
-        Выберите игру и перейдите в соответствующий раздел.
-
-    </p>
-
+<div class="toast" id="toast">
+Код скопирован!
 </div>
-
-<section class="games">
-
-    <div class="game-card">
-
-        <img src="https://i.pinimg.com/736x/e6/71/bf/e671bf2faba205700d17a6d33197e64f.jpg" alt="Robux">
-
-        <div class="game-info">
-
-            <h3>
-
-                Robux
-
-            </h3>
-
-            <p>
-
-                Покупайте Robux быстро, удобно и безопасно.
-
-            </p>
-
-            <button class="game-btn">
-
-                Открыть →
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <div class="game-card">
-
-        <img src="https://i.pinimg.com/736x/87/04/2e/87042e57a8eafa2cd69e6bbe7c235735.jpg" alt="Murder Mystery 2">
-
-        <div class="game-info">
-
-            <h3>
-
-                Murder Mystery 2
-
-            </h3>
-
-            <p>
-
-                Godly • Ancient • Vintage • Chroma
-
-            </p>
-
-            <button class="game-btn">
-
-                Открыть →
-
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!--==========================================
-ADVANTAGES
-===========================================-->
-
-<div class="section-title">
-
-    <h2>
-
-        Почему LootPets?
-
-    </h2>
-
-    <p>
-
-        Всё необходимое для безопасной торговли.
-
-    </p>
-
-</div>
-
-<section class="features">
-
-    <div class="feature-card">
-
-        <div class="feature-icon">
-
-            ⚡
-
-        </div>
-
-        <h3>
-
-            Быстрая доставка
-
-        </h3>
-
-        <p>
-
-            После запуска большинство заказов будет выполняться максимально быстро.
-
-        </p>
-
-    </div>
-
-    <div class="feature-card">
-
-        <div class="feature-icon">
-
-            🔒
-
-        </div>
-
-        <h3>
-
-            Безопасные сделки
-
-        </h3>
-
-        <p>
-
-            Каждая сделка будет защищена системой LootPets.
-
-        </p>
-
-    </div>
-
-    <div class="feature-card">
-
-        <div class="feature-icon">
-
-            💬
-
-        </div>
-
-        <h3>
-
-            Поддержка
-
-        </h3>
-
-        <p>
-
-            Наша команда всегда поможет при возникновении вопросов.
-
-        </p>
-
-    </div>
-
-    <div class="feature-card">
-
-        <div class="feature-icon">
-
-            ⭐
-
-        </div>
-
-        <h3>
-
-            Современная платформа
-
-        </h3>
-
-        <p>
-
-            Мы постоянно улучшаем сайт и добавляем новые возможности.
-
-        </p>
-
-    </div>
-
-</section>
-
-<!--==========================================
-FAQ
-===========================================-->
-
-<div class="section-title">
-
-    <h2>
-
-        Часто задаваемые вопросы
-
-    </h2>
-
-    <p>
-
-        Ответы на самые популярные вопросы.
-
-    </p>
-
-</div>
-
-<section class="faq">
-
-    <div class="faq-item">
-
-        <h3>
-
-            Как создать аккаунт?
-
-        </h3>
-
-        <p>
-
-            Нажмите кнопку «Профиль», заполните форму регистрации и подтвердите Email после запуска системы подтверждения.
-
-        </p>
-
-    </div>
-
-    <div class="faq-item">
-
-        <h3>
-
-            Какие игры будут доступны?
-
-        </h3>
-
-        <p>
-
-            На старте будут доступны Robux и Murder Mystery 2. Позже список игр будет постепенно расширяться.
-
-        </p>
-
-    </div>
-
-    <div class="faq-item">
-
-        <h3>
-
-            Безопасны ли сделки?
-
-        </h3>
-
-        <p>
-
-            Да. После запуска все сделки будут проходить через систему защиты LootPets.
-
-        </p>
-
-    </div>
-
-</section>
-
-<!--==========================================
-NEWS
-===========================================-->
-
-<div class="section-title">
-
-    <h2>
-
-        Последние новости
-
-    </h2>
-
-    <p>
-
-        Следите за развитием LootPets.
-
-    </p>
-
-</div>
-
-<section class="features">
-
-    <div class="feature-card">
-
-        <div class="feature-icon">
-
-            🚀
-
-        </div>
-
-        <h3>
-
-            Начало разработки
-
-        </h3>
-
-        <p>
-
-            Мы активно разрабатываем LootPets и постоянно улучшаем дизайн и функциональность.
-
-        </p>
-
-    </div>
-
-    <div class="feature-card">
-
-        <div class="feature-icon">
-
-            📧
-
-        </div>
-
-        <h3>
-
-            Email подтверждение
-
-        </h3>
-
-        <p>
-
-            Скоро появится подтверждение регистрации кодом, который будет отправляться на Email.
-
-        </p>
-
-    </div>
-
-    <div class="feature-card">
-
-        <div class="feature-icon">
-
-            👤
-
-        </div>
-
-        <h3>
-
-            Личный кабинет
-
-        </h3>
-
-        <p>
-
-            Пользователи смогут просматривать покупки, продажи и изменять настройки профиля.
-
-        </p>
-
-    </div>
-
-    <div class="feature-card">
-
-        <div class="feature-icon">
-
-            🛒
-
-        </div>
-
-        <h3>
-
-            Маркетплейс
-
-        </h3>
-
-        <p>
-
-            После запуска продавцы смогут размещать товары, а покупатели — безопасно их приобретать.
-
-        </p>
-
-    </div>
-
-</section>
-
-<!--==========================================
-FOOTER
-===========================================-->
-
-<footer class="footer">
-
-    <div class="footer-logo">
-
-        <span class="loot">Loot</span><span class="pets">Pets</span>
-
-    </div>
-
-    <div class="footer-links">
-
-        <a href="#">Главная</a>
-
-        <a href="#">FAQ</a>
-
-        <a href="#">Новости</a>
-
-        <a href="#">Поддержка</a>
-
-        <a href="#">Политика конфиденциальности</a>
-
-    </div>
-
-    <div class="footer-copy">
-
-        © 2026 LootPets. Все права защищены.
-
-    </div>
-
-</footer>
-
-<!--==========================================
-BUTTON UP
-===========================================-->
-
-<button id="topButton" class="top-btn">
-
-↑
-
-</button>
 
 <script>
 
-/*==========================================
-LANGUAGE MENU
-==========================================*/
+const items=[
 
-const langButton=document.getElementById("langButton");
-const langMenu=document.getElementById("langMenu");
+{
+    name:"Corrupt",
+    category:"Unique",
+    price:1200,
+    code:"880714",
+    image:"https://supremevalues.com/media/mm2uniques/Corrupt.webp"
+},
+    
+{
+    name:"Gingerscope",
+    category:"Ancient",
+    price:40000,
+    code:"483921",
+    image:"https://supremevalues.com/media/mm2ancients/Gingerscope.webp"
+},
 
-langButton.addEventListener("click",(e)=>{
+{
+    name:"Traveler's Axe",
+    category:"Ancient",
+    price:25000,
+    code:"761284",
+    image:"https://supremevalues.com/media/mm2ancients/Travelers_Axe.webp"
+},
 
-e.stopPropagation();
+{
+    name:"Celestial",
+    category:"Ancient",
+    price:5500,
+    code:"514908",
+    image:"https://supremevalues.com/media/mm2ancients/Celestial.webp"
+},
 
-langMenu.classList.toggle("show");
+{
+    name:"Vampire's Axe",
+    category:"Ancient",
+    price:3500,
+    code:"194762",
+    image:"https://supremevalues.com/media/mm2ancients/Vampires_Axe.webp"
+},
 
-});
+{
+    name:"Harvester",
+    category:"Ancient",
+    price:1500,
+    code:"826591",
+    image:"https://supremevalues.com/media/mm2ancients/Harvester.webp"
+},
 
-document.querySelectorAll(".lang-item").forEach(item=>{
+{
+    name:"Icepiercer",
+    category:"Ancient",
+    price:1000,
+    code:"905611",
+    image:"https://supremevalues.com/media/mm2ancients/Icepiercer.webp"
+},
 
-item.addEventListener("click",function(){
+{
+    name:"Icebreaker",
+    category:"Ancient",
+    price:250,
+    code:"731055",
+    image:"https://supremevalues.com/media/mm2ancients/Icebreaker.webp"
+},
 
-langButton.innerHTML=this.innerHTML+" ▼";
+{
+    name:"Batwing",
+    category:"Ancient",
+    price:200,
+    code:"642918",
+    image:"https://supremevalues.com/media/mm2ancients/Batwing.webp"
+},
 
-langMenu.classList.remove("show");
+{
+    name:"Elderwood Scythe",
+    category:"Ancient",
+    price:150,
+    code:"357104",
+    image:"https://supremevalues.com/media/mm2ancients/Elderwood_Scythe.webp"
+},
 
-/* Позже здесь будет переход
-на другую языковую страницу */
+{
+    name:"Swirly Axe",
+    category:"Ancient",
+    price:150,
+    code:"786415",
+    image:"https://supremevalues.com/media/mm2ancients/Swirly_Axe.webp"
+},
 
-});
+{
+    name:"Hallowscythe",
+    category:"Ancient",
+    price:100,
+    code:"106284",
+    image:"https://supremevalues.com/media/mm2ancients/Hallowscythe.webp"
+},
 
-});
+{
+    name:"Logchopper",
+    category:"Ancient",
+    price:50,
+    code:"118593",
+    image:"https://supremevalues.com/media/mm2ancients/Logchopper.webp"
+},
 
-document.addEventListener("click",(e)=>{
+{
+    name:"Icewing",
+    category:"Ancient",
+    price:40,
+    code:"124870",
+    image:"https://supremevalues.com/media/mm2ancients/Icewing.webp"
+},
 
-if(!e.target.closest(".language")){
+{
+    name:"Blood",
+    category:"Vintage",
+    price:40,
+    code:"132645",
+    image:"https://supremevalues.com/media/mm2vintages/Blood.webp"
+},
 
-langMenu.classList.remove("show");
+{
+    name:"Ghost",
+    category:"Vintage",
+    price:40,
+    code:"185115",
+    image:"https://supremevalues.com/media/mm2vintages/Ghost.webp"
+},
 
+{
+    name:"Laser",
+    category:"Vintage",
+    price:40,
+    code:"145208",
+    image:"https://supremevalues.com/media/mm2vintages/Laser.webp"
+},
+
+{
+    name:"America",
+    category:"Vintage",
+    price:40,
+    code:"152974",
+    image:"https://supremevalues.com/media/mm2vintages/America.webp"
+},
+
+{
+    name:"Prince",
+    category:"Vintage",
+    price:40,
+    code:"163850",
+    image:"https://supremevalues.com/media/mm2vintages/Prince.webp"
+},
+
+{
+    name:"Shadow",
+    category:"Vintage",
+    price:40,
+    code:"174291",
+    image:"https://supremevalues.com/media/mm2vintages/Shadow.webp"
+},
+
+{
+    name:"Phaser",
+    category:"Vintage",
+    price:40,
+    code:"186437",
+    image:"https://supremevalues.com/media/mm2vintages/Phaser.webp"
+},
+
+{
+    name:"Cowboy",
+    category:"Vintage",
+    price:40,
+    code:"197650",
+    image:"https://supremevalues.com/media/mm2vintages/Cowboy.webp"
+},
+
+{
+    name:"Golden",
+    category:"Vintage",
+    price:40,
+    code:"203841",
+    image:"https://supremevalues.com/media/mm2vintages/Golden.webp"
+},
+
+{
+    name:"Splitter",
+    category:"Vintage",
+    price:40,
+    code:"214695",
+    image:"https://supremevalues.com/media/mm2vintages/Splitter.webp"
+},
+
+{
+    name:"C. Traveler's Gun",
+    category:"Chroma",
+    price:1000000,
+    code:"225703",
+    image:"https://supremevalues.com/media/mm2chromas/CTG.webp"
+},
+
+{
+    name:"Chroma Evergun",
+    category:"Chroma",
+    price:200000,
+    code:"236918",
+    image:"https://supremevalues.com/media/mm2chromas/CEvergun.webp"
+},
+
+{
+    name:"Chroma Evergreen",
+    category:"Chroma",
+    price:150000,
+    code:"247561",
+    image:"https://supremevalues.com/media/mm2chromas/CEvergreen.webp"
+},
+
+{
+    name:"Chroma Bauble",
+    category:"Chroma",
+    price:90000,
+    code:"258490",
+    image:"https://supremevalues.com/media/mm2chromas/CBaub.webp"
+},
+
+{
+    name:"C. Vampire's Gun",
+    category:"Chroma",
+    price:700000,
+    code:"269715",
+    image:"https://supremevalues.com/media/mm2chromas/CVG.webp"
+},
+
+{
+    name:"C. Constellation",
+    category:"Chroma",
+    price:60000,
+    code:"271836",
+    image:"https://supremevalues.com/media/mm2chromas/CConst.webp"
+},
+
+{
+    name:"Chroma Alienbeam",
+    category:"Chroma",
+    price:50000,
+    code:"283407",
+    image:"https://supremevalues.com/media/mm2chromas/CAB.webp"
+},
+
+{
+    name:"Chroma Sunrise",
+    category:"Chroma",
+    price:40000,
+    code:"294518",
+    image:"https://supremevalues.com/media/mm2chromas/CSR.webp"
+},
+
+{
+    name:"Chroma Raygun",
+    category:"Chroma",
+    price:45000,
+    code:"305627",
+    image:"https://supremevalues.com/media/mm2chromas/CRG.webp"
+},
+
+{
+    name:"Chroma Snowcannon",
+    category:"Chroma",
+    price:25000,
+    code:"316904",
+    image:"https://supremevalues.com/media/mm2chromas/CCannon.webp"
+},
+
+{
+    name:"Chroma Sunset",
+    category:"Chroma",
+    price:25000,
+    code:"327158",
+    image:"https://supremevalues.com/media/mm2chromas/CSS.webp"
+},
+
+{
+    name:"Chroma Blizzard",
+    category:"Chroma",
+    price:20000,
+    code:"338942",
+    image:"https://supremevalues.com/media/mm2chromas/CBZ.webp"
+},
+
+{
+    name:"Chroma Snow Dagger",
+    category:"Chroma",
+    price:15000,
+    code:"349607",
+    image:"https://supremevalues.com/media/mm2chromas/CDagger.webp"
+},
+
+{
+    name:"Chroma Snowstorm",
+    category:"Chroma",
+    price:15000,
+    code:"351826",
+    image:"https://supremevalues.com/media/mm2chromas/CSnowstorm.webp"
+},
+
+{
+    name:"Chroma Heart Wand",
+    category:"Chroma",
+    price:15000,
+    code:"362495",
+    image:"https://supremevalues.com/media/mm2chromas/CHW.webp"
+},
+
+{
+    name:"Chroma Watergun",
+    category:"Chroma",
+    price:10000,
+    code:"373184",
+    image:"https://supremevalues.com/media/mm2chromas/CWG.webp"
+},
+
+{
+    name:"Chroma Treat",
+    category:"Chroma",
+    price:9000,
+    code:"384920",
+    image:"https://supremevalues.com/media/mm2chromas/CTreat.webp"
+},
+
+{
+    name:"Chroma Sweet",
+    category:"Chroma",
+    price:6500,
+    code:"395671",
+    image:"https://supremevalues.com/media/mm2chromas/CSweet.webp"
+},
+
+{
+    name:"Chroma Icecream",
+    category:"Chroma",
+    price:6000,
+    code:"406258",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/9/9b/C_Icecream.png/revision/latest/thumbnail/width/360/height/360?cb=20260724020208"
+},
+
+{
+    name:"Chroma Sands",
+    category:"Chroma",
+    price:5500,
+    code:"417930",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/e/e9/CSands.png/revision/latest/thumbnail/width/360/height/360?cb=20260724023829"
+},
+
+{
+    name:"Chroma Ornament",
+    category:"Chroma",
+    price:5500,
+    code:"428615",
+    image:"https://supremevalues.com/media/mm2chromas/COR.webp"
+},
+
+{
+    name:"Chroma Beachy",
+    category:"Chroma",
+    price:5000,
+    code:"439072",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/0/08/CBeachy.png/revision/latest/thumbnail/width/360/height/360?cb=20260724023752"
+},
+
+{
+    name:"Chroma Darkbringer",
+    category:"Chroma",
+    price:250,
+    code:"441958",
+    image:"https://supremevalues.com/media/mm2chromas/CDB.webp"
+},
+
+{
+    name:"Chroma Lightbringer",
+    category:"Chroma",
+    price:225,
+    code:"452603",
+    image:"https://supremevalues.com/media/mm2chromas/CLB.webp"
+},
+
+{
+    name:"Chroma Luger",
+    category:"Chroma",
+    price:200,
+    code:"463817",
+    image:"https://supremevalues.com/media/mm2chromas/CLuger.webp"
+},
+
+{
+    name:"Chroma Candleflame",
+    category:"Chroma",
+    price:180,
+    code:"474126",
+    image:"https://supremevalues.com/media/mm2chromas/CCF.webp"
+},
+
+{
+    name:"Chroma Laser",
+    category:"Chroma",
+    price:180,
+    code:"485739",
+    image:"https://supremevalues.com/media/mm2chromas/CLaser.webp"
+},
+
+{
+    name:"Chroma Swirly Gun",
+    category:"Chroma",
+    price:170,
+    code:"496205",
+    image:"https://supremevalues.com/media/mm2chromas/CSG.webp"
+},
+
+{
+    name:"C. Elderwood Blade",
+    category:"Chroma",
+    price:165,
+    code:"507318",
+    image:"https://supremevalues.com/media/mm2chromas/CEB.webp"
+},
+
+{
+    name:"Chroma Deathshard",
+    category:"Chroma",
+    price:160,
+    code:"518764",
+    image:"https://supremevalues.com/media/mm2chromas/CDS.webp"
+},
+
+{
+    name:"Chroma Cookiecane",
+    category:"Chroma",
+    price:150,
+    code:"529143",
+    image:"https://supremevalues.com/media/mm2chromas/CCC.webp"
+},
+
+{
+    name:"Chroma Fang",
+    category:"Chroma",
+    price:150,
+    code:"531890",
+    image:"https://supremevalues.com/media/mm2chromas/CFang.webp"
+},
+
+{
+    name:"Chroma Gemstone",
+    category:"Chroma",
+    price:150,
+    code:"542671",
+    image:"https://supremevalues.com/media/mm2chromas/CGem.webp"
+},
+
+{
+    name:"Chroma Shark",
+    category:"Chroma",
+    price:150,
+    code:"553204",
+    image:"https://supremevalues.com/media/mm2chromas/CShark.webp"
+},
+
+{
+    name:"Chroma Slasher",
+    category:"Chroma",
+    price:150,
+    code:"564918",
+    image:"https://supremevalues.com/media/mm2chromas/CSlasher.webp"
+},
+
+{
+    name:"Chroma Heat",
+    category:"Chroma",
+    price:140,
+    code:"575631",
+    image:"https://supremevalues.com/media/mm2chromas/CHeat.webp"
+},
+
+{
+    name:"Chroma Seer",
+    category:"Chroma",
+    price:150,
+    code:"586247",
+    image:"https://supremevalues.com/media/mm2chromas/CSeer.webp"
+},
+
+{
+    name:"Chroma Gingerblade",
+    category:"Chroma",
+    price:150,
+    code:"597830",
+    image:"https://supremevalues.com/media/mm2chromas/CGB.webp"
+},
+
+{
+    name:"Chroma Tides",
+    category:"Chroma",
+    price:150,
+    code:"608415",
+    image:"https://supremevalues.com/media/mm2chromas/CTides.webp"
+},
+
+{
+    name:"Chroma Saw",
+    category:"Chroma",
+    price:145,
+    code:"619052",
+    image:"https://supremevalues.com/media/mm2chromas/CSaw.webp"
+},
+
+{
+    name:"Chroma Boneblade",
+    category:"Chroma",
+    price:140,
+    code:"620743",
+    image:"https://supremevalues.com/media/mm2chromas/CBB.webp"
+},
+
+{
+    name:"Traveler's Gun",
+    category:"Godly",
+    price:15000,
+    code:"631984",
+    image:"https://supremevalues.com/media/mm2godlies/Travelers_Gun.webp"
+},
+
+{
+    name:"Evergun",
+    category:"Godly",
+    price:9000,
+    code:"642357",
+    image:"https://supremevalues.com/media/mm2godlies/Evergun.webp"
+},
+
+{
+    name:"Constellation",
+    category:"Godly",
+    price:7000,
+    code:"653190",
+    image:"https://supremevalues.com/media/mm2godlies/Constellation.webp"
+},
+
+{
+    name:"Evergreen",
+    category:"Godly",
+    price:5500,
+    code:"664725",
+    image:"https://supremevalues.com/media/mm2godlies/Evergreen.webp"
+},
+
+{
+    name:"Turkey",
+    category:"Godly",
+    price:5000,
+    code:"675418",
+    image:"https://supremevalues.com/media/mm2godlies/Turkey.webp"
+},
+
+{
+    name:"Vampire's Gun",
+    category:"Godly",
+    price:4000,
+    code:"686902",
+    image:"https://supremevalues.com/media/mm2godlies/Vampires_Gun.webp"
+},
+
+{
+    name:"Alienbeam",
+    category:"Godly",
+    price:3900,
+    code:"697134",
+    image:"https://supremevalues.com/media/mm2godlies/Alienbeam.webp"
+},
+
+{
+    name:"Darkshot",
+    category:"Godly",
+    price:3500,
+    code:"708563",
+    image:"https://supremevalues.com/media/mm2godlies/Darkshot.webp"
+},
+
+{
+    name:"Darksword",
+    category:"Godly",
+    price:3500,
+    code:"719246",
+    image:"https://supremevalues.com/media/mm2godlies/Darksword.webp"
+},
+
+{
+    name:"Raygun",
+    category:"Godly",
+    price:3350,
+    code:"720915",
+    image:"https://supremevalues.com/media/mm2godlies/Raygun.webp"
+},
+
+{
+    name:"Blossom",
+    category:"Godly",
+    price:3100,
+    code:"731462",
+    image:"https://supremevalues.com/media/mm2godlies/Blossom.webp"
+},
+
+{
+    name:"Sakura",
+    category:"Godly",
+    price:3100,
+    code:"119408",
+    image:"https://supremevalues.com/media/mm2godlies/Sakura.webp"
+},
+
+{
+    name:"Sunrise",
+    category:"Godly",
+    price:3250,
+    code:"742508",
+    image:"https://supremevalues.com/media/mm2godlies/Sunrise.webp"
+},
+
+{
+    name:"Snowcannon",
+    category:"Godly",
+    price:3000,
+    code:"775603",
+    image:"https://supremevalues.com/media/mm2godlies/Snowcannon.webp"
+},
+
+{
+    name:"Bauble",
+    category:"Godly",
+    price:2750,
+    code:"764820",
+    image:"https://supremevalues.com/media/mm2godlies/Bauble.webp"
+},
+
+{
+    name:"Sunset",
+    category:"Godly",
+    price:2250,
+    code:"753194",
+    image:"https://supremevalues.com/media/mm2godlies/Sunset.webp"
+},
+
+{
+    name:"Soul",
+    category:"Godly",
+    price:2200,
+    code:"797028",
+    image:"https://supremevalues.com/media/mm2godlies/Soul.webp"
+},
+
+{
+    name:"Spirit",
+    category:"Godly",
+    price:2100,
+    code:"808314",
+    image:"https://supremevalues.com/media/mm2godlies/Spirit.webp"
+},
+
+{
+    name:"Rainbow Gun",
+    category:"Godly",
+    price:1750,
+    code:"819675",
+    image:"https://supremevalues.com/media/mm2godlies/Rainbow_Gun.webp"
+},
+
+{
+    name:"Flora",
+    category:"Godly",
+    price:1700,
+    code:"820946",
+    image:"https://supremevalues.com/media/mm2godlies/Flora.webp"
+},
+
+{
+    name:"Rainbow",
+    category:"Godly",
+    price:1700,
+    code:"831257",
+    image:"https://supremevalues.com/media/mm2godlies/Rainbow_Knife.webp"
+},
+
+{
+    name:"Bloom",
+    category:"Godly",
+    price:1650,
+    code:"842691",
+    image:"https://supremevalues.com/media/mm2godlies/Bloom.webp"
+},
+
+{
+    name:"Heart Wand",
+    category:"Godly",
+    price:1250,
+    code:"853704",
+    image:"https://supremevalues.com/media/mm2godlies/Heart_Wand.webp"
+},
+
+{
+    name:"Ocean",
+    category:"Godly",
+    price:1000,
+    code:"864318",
+    image:"https://supremevalues.com/media/mm2godlies/Ocean.webp"
+},
+
+{
+    name:"Waves",
+    category:"Godly",
+    price:1000,
+    code:"875920",
+    image:"https://supremevalues.com/media/mm2godlies/Waves.webp"
+},
+
+{
+    name:"Xenoknife",
+    category:"Godly",
+    price:1000,
+    code:"886137",
+    image:"https://supremevalues.com/media/mm2godlies/Xenoknife.webp"
+},
+
+{
+    name:"Xenoshot",
+    category:"Godly",
+    price:1000,
+    code:"897564",
+    image:"https://supremevalues.com/media/mm2godlies/Xenoshot.webp"
+},
+
+{
+    name:"Flowerwood Gun",
+    category:"Godly",
+    price:950,
+    code:"908241",
+    image:"https://supremevalues.com/media/mm2godlies/Flowerwood_Gun.webp"
+},
+
+{
+    name:"Blizzard",
+    category:"Godly",
+    price:950,
+    code:"919856",
+    image:"https://supremevalues.com/media/mm2godlies/Blizzard.webp"
+},
+
+{
+    name:"Flowerwood",
+    category:"Godly",
+    price:950,
+    code:"920374",
+    image:"https://supremevalues.com/media/mm2godlies/Flowerwood.webp"
+},
+
+{
+    name:"Snowstorm",
+    category:"Godly",
+    price:950,
+    code:"931648",
+    image:"https://supremevalues.com/media/mm2godlies/Snowstorm.webp"
+},
+
+{
+    name:"Snow Dagger",
+    category:"Godly",
+    price:925,
+    code:"942715",
+    image:"https://supremevalues.com/media/mm2godlies/Snow_Dagger.webp"
+},
+
+{
+    name:"Watergun",
+    category:"Godly",
+    price:925,
+    code:"953082",
+    image:"https://supremevalues.com/media/mm2godlies/Watergun.webp"
+},
+
+{
+    name:"Icecream",
+    category:"Godly",
+    price:600,
+    code:"954786",
+    image:"https://supremevalues.com/media/mm2godlies/Icecream.webp"
+},
+
+{
+    name:"Treat",
+    category:"Godly",
+    price:690,
+    code:"964531",
+    image:"https://supremevalues.com/media/mm2godlies/Treat.webp"
+},
+
+{
+    name:"Beachy",
+    category:"Godly",
+    price:680,
+    code:"975246",
+    image:"https://supremevalues.com/media/mm2godlies/Beachy.webp"
+},
+
+{
+    name:"Sands",
+    category:"Godly",
+    price:680,
+    code:"986703",
+    image:"https://supremevalues.com/media/mm2godlies/Sands.webp"
+},
+
+{
+    name:"Sweet",
+    category:"Godly",
+    price:680,
+    code:"997418",
+    image:"https://supremevalues.com/media/mm2godlies/Sweet.webp"
+},
+
+{
+    name:"Borealis",
+    category:"Godly",
+    price:600,
+    code:"377912",
+    image:"https://supremevalues.com/media/mm2godlies/Borealis.webp"
+},
+
+{
+    name:"Australis",
+    category:"Godly",
+    price:590,
+    code:"108735",
+    image:"https://supremevalues.com/media/mm2godlies/Australis.webp"
+},
+
+{
+    name:"Bat",
+    category:"Godly",
+    price:550,
+    code:"129864",
+    image:"https://supremevalues.com/media/mm2godlies/Bat.webp"
+},
+
+{
+    name:"Pearlshine",
+    category:"Godly",
+    price:450,
+    code:"148205",
+    image:"https://supremevalues.com/media/mm2godlies/Pearlshine.webp"
+},
+
+{
+    name:"Pearl",
+    category:"Godly",
+    price:425,
+    code:"167349",
+    image:"https://supremevalues.com/media/mm2godlies/Pearl.webp"
+},
+
+{
+    name:"Candy",
+    category:"Godly",
+    price:400,
+    code:"209573",
+    image:"https://supremevalues.com/media/mm2godlies/Candy.webp"
+},
+
+{
+    name:"Heartblade",
+    category:"Godly",
+    price:375,
+    code:"248631",
+    image:"https://supremevalues.com/media/mm2godlies/Heartblade.webp"
+},
+
+{
+    name:"Luger",
+    category:"Godly",
+    price:350,
+    code:"287540",
+    image:"https://supremevalues.com/media/mm2godlies/Luger.webp"
+},
+
+{
+    name:"Red Luger",
+    category:"Godly",
+    price:325,
+    code:"675348",
+    image:"https://supremevalues.com/media/mm2godlies/Red_Luger.webp"
+},
+
+{
+    name:"Phantom",
+    category:"Godly",
+    price:310,
+    code:"326791",
+    image:"https://supremevalues.com/media/mm2godlies/Phantom.webp"
+},
+
+{
+    name:"Spectre",
+    category:"Godly",
+    price:310,
+    code:"365248",
+    image:"https://supremevalues.com/media/mm2godlies/Spectre.webp"
+},
+
+{
+    name:"Candleflame",
+    category:"Godly",
+    price:300,
+    code:"404913",
+    image:"https://supremevalues.com/media/mm2godlies/Candleflame.webp"
+},
+
+{
+    name:"Darkbringer",
+    category:"Godly",
+    price:300,
+    code:"443826",
+    image:"https://supremevalues.com/media/mm2godlies/Darkbringer.webp"
+},
+
+{
+    name:"Elderwood Blade",
+    category:"Godly",
+    price:300,
+    code:"482157",
+    image:"https://supremevalues.com/media/mm2godlies/Elderwood_Blade.webp"
+},
+
+{
+    name:"Elderwood Revolver",
+    category:"Godly",
+    price:300,
+    code:"157832",
+    image:"https://supremevalues.com/media/mm2godlies/Elderwood_Revolver.webp"
+},
+
+{
+    name:"Iceblaster",
+    category:"Godly",
+    price:300,
+    code:"521690",
+    image:"https://supremevalues.com/media/mm2godlies/Iceblaster.webp"
+},
+
+{
+    name:"Lightbringer",
+    category:"Godly",
+    price:300,
+    code:"560348",
+    image:"https://supremevalues.com/media/mm2godlies/Lightbringer.webp"
+},
+
+{
+    name:"Makeshift",
+    category:"Godly",
+    price:300,
+    code:"101362",
+    image:"https://supremevalues.com/media/mm2godlies/Makeshift.webp"
+},
+
+{
+    name:"Sugar",
+    category:"Godly",
+    price:300,
+    code:"112847",
+    image:"https://supremevalues.com/media/mm2godlies/Sugar.webp"
+},
+
+{
+    name:"Ornament",
+    category:"Godly",
+    price:225,
+    code:"123506",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/5/52/OrnamentKnife2025.png/revision/latest/thumbnail/width/360/height/360?cb=20260101134747"
+},
+
+{
+    name:"Green Luger",
+    category:"Godly",
+    price:210,
+    code:"134891",
+    image:"https://cdn.nookazon.com/mm2/items/332044679.png"
+},
+
+{
+    name:"Amerilaser",
+    category:"Godly",
+    price:210,
+    code:"146230",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/0/08/Png_%282%29.png/revision/latest/thumbnail/width/360/height/360?cb=20201025090312"
+},
+
+{
+    name:"Laser",
+    category:"Godly",
+    price:210,
+    code:"157684",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/e/ea/LaserUpdated.png/revision/latest?cb=20210903060450"
+},
+
+{
+    name:"Hallowgun",
+    category:"Godly",
+    price:200,
+    code:"168952",
+    image:"https://cdn.shopify.com/s/files/1/0837/8712/0919/files/hallow-gun_600x600.png.webp?v=1723520005"
+},
+
+{
+    name:"Nightblade",
+    category:"Godly",
+    price:200,
+    code:"179341",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/e/ef/NightBladeUpdated.png/revision/latest?cb=20210816005853"
+},
+
+{
+    name:"Shark",
+    category:"Godly",
+    price:200,
+    code:"102954",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/1/14/Shark.png/revision/latest?cb=20210204081632"
+},
+
+{
+    name:"Icebeam",
+    category:"Godly",
+    price:190,
+    code:"181706",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/b/bd/IceBeam.png/revision/latest?cb=20211221141319"
+},
+
+{
+    name:"Plasmabeam",
+    category:"Godly",
+    price:180,
+    code:"192485",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/5/59/Plasmabeam_improved.webp/revision/latest?cb=20220701193718"
+},
+
+{
+    name:"Swirly Gun",
+    category:"Godly",
+    price:180,
+    code:"204167",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/4/4c/SwirlGun.png/revision/latest/thumbnail/width/360/height/360?cb=20211222064112"
+},
+
+{
+    name:"Battleaxe II",
+    category:"Godly",
+    price:170,
+    code:"215839",
+    image:"https://cdn.nookazon.com/mm2/items/2513535503.png"
+},
+
+{
+    name:"Blaster",
+    category:"Godly",
+    price:170,
+    code:"226574",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/2/22/Png_%287%29.png/revision/latest?cb=20201025091836"
+},
+
+{
+    name:"Ginger Luger",
+    category:"Godly",
+    price:170,
+    code:"237981",
+    image:"https://production-gameflipusercontent.fingershock.com/us-east-1:6976b9e5-1fbd-46dc-922b-97cf9918ff4d/a843f5f2-9e58-4be5-9d27-b8590fa36cc5/53434342-a60b-4e8a-b535-6fe0bbdf2254/640x640.webp"
+},
+
+{
+    name:"Pixel",
+    category:"Godly",
+    price:170,
+    code:"249306",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/a/a4/PixelUpdatedV2.png/revision/latest?cb=20210826030733"
+},
+
+{
+    name:"Gemstone",
+    category:"Godly",
+    price:150,
+    code:"251874",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/0/0a/Gemstone.png/revision/latest?cb=20201201210714"
+},
+
+{
+    name:"Iceflake",
+    category:"Godly",
+    price:150,
+    code:"262519",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/5/5b/IceFlake.png/revision/latest?cb=20211221141308"
+},
+
+{
+    name:"Old Glory",
+    category:"Godly",
+    price:150,
+    code:"273640",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/a/a9/OldGloryUpdatedV2.png/revision/latest?cb=20210813155243"
+},
+
+{
+    name:"Plasmablade",
+    category:"Godly",
+    price:150,
+    code:"284957",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/f/f2/Plasmablade_improved.webp/revision/latest?cb=20220701193350"
+},
+
+{
+    name:"Slasher",
+    category:"Godly",
+    price:150,
+    code:"295103",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/9/9a/Slasher.png/revision/latest?cb=20170314155535"
+},
+
+{
+    name:"Vampire's Edge",
+    category:"Godly",
+    price:150,
+    code:"307856",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/b/ba/Vampiresedge.png/revision/latest?cb=20201129132821"
+},
+
+{
+    name:"Cookiecane",
+    category:"Godly",
+    price:130,
+    code:"318429",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/b/b6/Cookiecane.png/revision/latest?cb=20221221174511"
+},
+
+{
+    name:"Deathshard",
+    category:"Godly",
+    price:130,
+    code:"329105",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/7/72/Deathshard_Updated.png/revision/latest?cb=20210731042740"
+},
+
+{
+    name:"Eternalcane",
+    category:"Godly",
+    price:130,
+    code:"340781",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/8/8d/Eternal_Cane.png/revision/latest?cb=20201129110801"
+},
+
+{
+    name:"Gingerblade",
+    category:"Godly",
+    price:130,
+    code:"352960",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/4/4a/Gingerblade_improved.png/revision/latest/thumbnail/width/360/height/360?cb=20210615220350"
+},
+
+{
+    name:"Jinglegun",
+    category:"Godly",
+    price:130,
+    code:"363214",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/b/b1/Jinglegun_%28Transparent%29.png/revision/latest?cb=20210204081429"
+},
+
+{
+    name:"Lugercane",
+    category:"Godly",
+    price:130,
+    code:"374809",
+    image:"https://cdn.nookazon.com/mm2/items/4535482609.png"
+},
+
+{
+    name:"Minty",
+    category:"Godly",
+    price:130,
+    code:"385472",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/5/58/Hdminty.png/revision/latest?cb=20201025092041"
+},
+
+{
+    name:"Nebula",
+    category:"Godly",
+    price:130,
+    code:"396158",
+    image:"https://cdn.nookazon.com/mm2/items/6598123521.png"
+},
+
+{
+    name:"Virtual",
+    category:"Godly",
+    price:130,
+    code:"407921",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/0/0b/Virtual_improved.png/revision/latest?cb=20210607230705"
+},
+
+{
+    name:"Battleaxe",
+    category:"Godly",
+    price:120,
+    code:"418630",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/d/d6/Battleaxe_improved.png/revision/latest?cb=20210613172424"
+},
+
+{
+    name:"Gingermint",
+    category:"Godly",
+    price:120,
+    code:"429571",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/0/02/Gingermint.png/revision/latest/thumbnail/width/360/height/360?cb=20221221181041"
+},
+
+{
+    name:"Swirly Blade",
+    category:"Godly",
+    price:120,
+    code:"430862",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/8/81/SwirlyBlade.png/revision/latest?cb=20211222071826"
+},
+
+{
+    name:"Chill",
+    category:"Godly",
+    price:100,
+    code:"442317",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/4/45/ChillUpdated4.png/revision/latest?cb=20211023044455"
+},
+
+{
+    name:"Clockwork",
+    category:"Godly",
+    price:100,
+    code:"453908",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/4/4e/ClockworkUpdatedV2.png/revision/latest?cb=20210826005104"
+},
+
+{
+    name:"Fang",
+    category:"Godly",
+    price:100,
+    code:"464235",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/8/84/FangUpdated.png/revision/latest?cb=20210816021912"
+},
+
+{
+    name:"Frostsaber",
+    category:"Godly",
+    price:100,
+    code:"475819",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/2/29/Frostsaber.png/revision/latest?cb=20180727103659"
+},
+
+{
+    name:"Heat",
+    category:"Godly",
+    price:100,
+    code:"486704",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/3/32/Heatv2.png/revision/latest?cb=20201129113132"
+},
+
+{
+    name:"Spider",
+    category:"Godly",
+    price:100,
+    code:"497315",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/1/1d/Spider_2.png/revision/latest?cb=20181223173119"
+},
+
+{
+    name:"Tides",
+    category:"Godly",
+    price:100,
+    code:"509628",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/b/be/Tidesv2.png/revision/latest?cb=20201129113204"
+},
+
+{
+    name:"Bioblade",
+    category:"Godly",
+    price:80,
+    code:"510943",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/b/bf/Mm2bioblade.png/revision/latest?cb=20201201211421"
+},
+
+{
+    name:"Eternal III",
+    category:"Godly",
+    price:80,
+    code:"522786",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/a/af/Eternal_III.png/revision/latest?cb=20201129110713"
+},
+
+{
+    name:"Eternal IV",
+    category:"Godly",
+    price:80,
+    code:"533471",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/8/89/Eternal_IIII.png/revision/latest?cb=20201129110258"
+},
+
+{
+    name:"Hallow's Blade",
+    category:"Godly",
+    price:80,
+    code:"544809",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/6/68/Hallowsblade.png/revision/latest?cb=20201129105952"
+},
+
+{
+    name:"Hallow's Edge",
+    category:"Godly",
+    price:80,
+    code:"555126",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/0/0c/HallowEdgeUpdated.png/revision/latest?cb=20210816023218"
+},
+
+{
+    name:"Handsaw",
+    category:"Godly",
+    price:80,
+    code:"566973",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/b/bb/Handsaw_Png.png/revision/latest?cb=20210520152704"
+},
+
+{
+    name:"Eternal",
+    category:"Godly",
+    price:70,
+    code:"588641",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/5/56/EternalUpdated.png/revision/latest?cb=20210822234233"
+},
+
+{
+    name:"Eternal II",
+    category:"Godly",
+    price:70,
+    code:"599207",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/8/85/Eternal_2.png/revision/latest?cb=20190128130938"
+},
+
+{
+    name:"Frostbite",
+    category:"Godly",
+    price:70,
+    code:"601534",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/f/f2/Frostbite_improved.png/revision/latest/thumbnail/width/360/height/360?cb=20210607225926"
+},
+
+{
+    name:"Ghostblade",
+    category:"Godly",
+    price:70,
+    code:"612879",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/1/10/Ghostbladev2.png/revision/latest?cb=20201129115934"
+},
+
+{
+    name:"Ice Dragon",
+    category:"Godly",
+    price:70,
+    code:"623145",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/c/cd/IceDragonUpdated.png/revision/latest?cb=20210826105504"
+},
+
+{
+    name:"Ice Shard",
+    category:"Godly",
+    price:70,
+    code:"634780",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/b/ba/IceShard.png/revision/latest?cb=20180727103709"
+},
+
+{
+    name:"Prismatic",
+    category:"Godly",
+    price:70,
+    code:"645213",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/4/41/PrismaticUpdated2.png/revision/latest?cb=20211026061049"
+},
+
+{
+    name:"Pumpking",
+    category:"Godly",
+    price:70,
+    code:"656804",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/6/67/Pumpking_improved.png/revision/latest?cb=20210612183854"
+},
+
+{
+    name:"Saw",
+    category:"Godly",
+    price:70,
+    code:"667391",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/0/0a/Saw.png/revision/latest?cb=20170314155813"
+},
+
+{
+    name:"Xmas",
+    category:"Godly",
+    price:70,
+    code:"678520",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/b/bb/Xmas_improved.png/revision/latest/thumbnail/width/360/height/360?cb=20210609225930"
+},
+
+{
+    name:"Eggblade",
+    category:"Godly",
+    price:50,
+    code:"689174",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/9/98/Eggblade_improved.png/revision/latest?cb=20210609230310"
+},
+
+{
+    name:"Flames",
+    category:"Godly",
+    price:50,
+    code:"690825",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/6/6e/FlamesUpdated.png/revision/latest?cb=20210919143555"
+},
+
+{
+    name:"Snowflake",
+    category:"Godly",
+    price:50,
+    code:"702418",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/2/27/Snowflake.png/revision/latest?cb=20180727103718"
+},
+
+{
+    name:"Winter's Edge",
+    category:"Godly",
+    price:50,
+    code:"713690",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/f/fb/WinterEdge.png/revision/latest?cb=20180727103649"
+},
+
+{
+    name:"Peppermint",
+    category:"Godly",
+    price:40,
+    code:"724153",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/f/f4/Cookieblade_%28transparent%29.png/revision/latest?cb=20210204082105"
+},
+
+{
+    name:"Blue Seer",
+    category:"Godly",
+    price:30,
+    code:"735804",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/f/f3/1aad7564-2836-43c5-befb-686aedf7bf9b.png/revision/latest?cb=20201211142043"
+},
+
+{
+    name:"Purple Seer",
+    category:"Godly",
+    price:30,
+    code:"746192",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/5/50/Purpleseer.png/revision/latest/thumbnail/width/360/height/360?cb=20200423164120"
+},
+
+{
+    name:"Red Seer",
+    category:"Godly",
+    price:30,
+    code:"757681",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/d/dd/Redseer.png/revision/latest?cb=20200123140034"
+},
+
+{
+    name:"Seer",
+    category:"Godly",
+    price:30,
+    code:"768234",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/e/ee/Seer.png/revision/latest?cb=20210204082208"
+},
+
+{
+    name:"Orange Seer",
+    category:"Godly",
+    price:20,
+    code:"779015",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/c/c8/OrangeseerNEW.png/revision/latest?cb=20200423164043"
+},
+
+{
+    name:"Yellow Seer",
+    category:"Godly",
+    price:20,
+    code:"780426",
+    image:"https://static.wikia.nocookie.net/murder-mystery-2/images/2/25/Yellowseer.png/revision/latest?cb=20200423164002"
 }
 
-});
+];
 
-/*==========================================
-REGISTER / LOGIN
-==========================================*/
+const shop=document.getElementById("shop");
+const toast=document.getElementById("toast");
 
-const registerModal=document.getElementById("registerModal");
+function copyCode(code){
 
-const loginModal=document.getElementById("loginModal");
+navigator.clipboard.writeText(code);
 
-const profileBtn=document.querySelector(".profile-btn");
-
-const closeRegister=document.getElementById("closeRegister");
-
-const closeLogin=document.getElementById("closeLogin");
-
-const openLogin=document.getElementById("openLogin");
-
-const openRegister=document.getElementById("openRegister");
-
-profileBtn.addEventListener("click",()=>{
-
-window.location.href="Login.html";
-
-});
-
-closeRegister.addEventListener("click",()=>{
-
-registerModal.classList.remove("show");
-
-});
-
-closeLogin.addEventListener("click",()=>{
-
-loginModal.classList.remove("show");
-
-});
-
-openLogin.addEventListener("click",()=>{
-
-registerModal.classList.remove("show");
-
-loginModal.classList.add("show");
-
-});
-
-openRegister.addEventListener("click",()=>{
-
-loginModal.classList.remove("show");
-
-registerModal.classList.add("show");
-
-});
-
-registerModal.addEventListener("click",(e)=>{
-
-if(e.target===registerModal){
-
-registerModal.classList.remove("show");
-
-}
-
-});
-
-loginModal.addEventListener("click",(e)=>{
-
-if(e.target===loginModal){
-
-loginModal.classList.remove("show");
-
-}
-
-});
-
-/*==========================================
-HERO BUTTONS
-==========================================*/
-
-document.querySelector(".start-btn").addEventListener("click",()=>{
-
-document.querySelector(".games").scrollIntoView({
-
-behavior:"smooth"
-
-});
-
-});
-
-document.querySelector(".more-btn").addEventListener("click",()=>{
-
-document.querySelector(".features").scrollIntoView({
-
-behavior:"smooth"
-
-});
-
-});
-
-
-/*==========================================
-REGISTER VALIDATION
-==========================================*/
-
-const registerButton=document.getElementById("registerButton");
-
-registerButton.addEventListener("click",()=>{
-
-const nickname=document.getElementById("registerNickname").value.trim();
-
-const email=document.getElementById("registerEmail").value.trim();
-
-const password=document.getElementById("registerPassword").value;
-
-const password2=document.getElementById("registerPassword2").value;
-
-if(nickname===""){
-
-alert("Введите ник.");
-
-return;
-
-}
-
-if(nickname.length<3){
-
-alert("Ник должен содержать минимум 3 символа.");
-
-return;
-
-}
-
-const emailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-if(!emailPattern.test(email)){
-
-alert("Введите корректный Email.");
-
-return;
-
-}
-
-if(password.length<6){
-
-alert("Пароль должен содержать минимум 6 символов.");
-
-return;
-
-}
-
-if(password!==password2){
-
-alert("Пароли не совпадают.");
-
-return;
-
-}
-
-/*==========================================
-TEMP REGISTER
-==========================================*/
-
-alert(
-"Регистрация прошла успешно!\n\n" +
-"Позже здесь будет:\n" +
-"• Проверка свободного ника\n" +
-"• Отправка кода на Email\n" +
-"• Сохранение пользователя в базе данных"
-);
-
-registerModal.classList.remove("show");
-
-});
-
-/*==========================================
-LOGIN
-==========================================*/
-
-const loginButton=document.getElementById("loginButton");
-
-loginButton.addEventListener("click",()=>{
-
-const user=document.getElementById("loginUser").value.trim();
-
-const pass=document.getElementById("loginPassword").value.trim();
-
-if(user===""){
-
-alert("Введите ник или Email.");
-
-return;
-
-}
-
-if(pass===""){
-
-alert("Введите пароль.");
-
-return;
-
-}
-
-alert("После подключения PHP здесь будет вход в аккаунт.");
-
-loginModal.classList.remove("show");
-
-});
-
-/*==========================================
-BACK TO TOP
-==========================================*/
-
-const topButton=document.getElementById("topButton");
-
-window.addEventListener("scroll",()=>{
-
-if(window.scrollY>500){
-
-topButton.classList.add("show");
-
-}else{
-
-topButton.classList.remove("show");
-
-}
-
-});
-
-topButton.addEventListener("click",()=>{
-
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-});
-
-});
-
-/*==========================================
-PRELOADER
-==========================================*/
-
-window.addEventListener("load",()=>{
-
-const preloader=document.getElementById("preloader");
+toast.classList.add("show");
 
 setTimeout(()=>{
 
-preloader.classList.add("hide");
+toast.classList.remove("show");
 
-},700);
-
-});
-
-/*==========================================
-FUTURE READY
-==========================================*/
-
-// Здесь позже будет:
-//
-// ✓ PHP
-// ✓ MySQL
-// ✓ Проверка свободного ника
-// ✓ Подтверждение Email кодом
-// ✓ Авторизация
-// ✓ Профиль
-// ✓ Настройки
-// ✓ История покупок
-// ✓ История продаж
-// ✓ Панель продавца
-// ✓ Админ-панель
-
-/*==========================================
-LOGO CLICK
-==========================================*/
-
-const logo=document.querySelector(".logo");
-
-logo.addEventListener("click",()=>{
-
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-});
-
-});
-
-/*==========================================
-KEYBOARD SHORTCUTS
-==========================================*/
-
-document.addEventListener("keydown",(e)=>{
-
-if(e.key==="Escape"){
-
-registerModal.classList.remove("show");
-
-loginModal.classList.remove("show");
-
-langMenu.classList.remove("show");
+},1800);
 
 }
 
+function render(){
+
+const search=document
+.getElementById("search")
+.value
+.toLowerCase();
+
+const category=document
+.getElementById("category")
+.value;
+
+shop.innerHTML="";
+
+items
+.filter(item=>{
+
+const name=item.name
+.toLowerCase()
+.includes(search);
+
+const cat=
+category==="All" ||
+item.category===category;
+
+return name && cat;
+
+})
+
+.forEach(item=>{
+
+const card=document.createElement("div");
+
+card.className="card";
+
+card.innerHTML=`
+
+<img src="${item.image}"
+alt="${item.name}"
+onerror="this.src='https://placehold.co/600x600/1b1b1b/ffffff?text=MM2'">
+
+<div class="card-content">
+
+<h2>🗡️ ${item.name}</h2>
+
+<span class="category ${item.category}">
+${item.category}
+</span>
+
+<div class="price">
+💎 ${item.price} Robux
+</div>
+
+
+
+`;
+
+shop.appendChild(card);
+
 });
 
-/*==========================================
-COMING SOON
-==========================================*/
+}
 
-// Следующие функции будут добавлены позже:
+// Первоначальная отрисовка
+render();
+
+// Можно быстро добавить новый предмет так:
 //
-// ✓ PHP
-// ✓ MySQL
-// ✓ Проверка свободного ника
-// ✓ Отправка кода подтверждения Email
-// ✓ Восстановление пароля
-// ✓ Личный кабинет
-// ✓ Настройки профиля
-// ✓ Уведомления
-// ✓ Панель продавца
-// ✓ Админ-панель
-// ✓ История покупок
-// ✓ История продаж
-// ✓ Онлайн-чат поддержки
-// ✓ Партнёрская программа
-// ✓ Система отзывов
-// ✓ Поиск по товарам
-// ✓ Избранные товары
-// ✓ Корзина
-// ✓ Платёжная система
+// items.push({
+//     name:"New Item",
+//     category:"Godly",
+//     price:999,
+//     code:"123456",
+//     image:"images/new-item.png"
+// });
+//
+// render();
 
-console.log("LootPets успешно загружен.");
+// Нажатие Enter в поиске обновляет список
+document.getElementById("search").addEventListener("keydown", (e)=>{
+    if(e.key==="Escape"){
+        e.target.value="";
+        render();
+    }
+});
+
+// Небольшая анимация появления карточек
+const observer = new MutationObserver(() => {
+
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach((card,index)=>{
+
+        card.style.opacity="0";
+        card.style.transform="translateY(25px)";
+
+        setTimeout(()=>{
+
+            card.style.transition=".35s";
+            card.style.opacity="1";
+            card.style.transform="translateY(0)";
+
+        },index*70);
+
+    });
+
+});
+
+observer.observe(shop,{
+    childList:true
+});
 
 </script>
 
 </body>
-
 </html>
