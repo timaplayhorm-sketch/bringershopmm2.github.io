@@ -1,269 +1,2291 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox Shop Premium</title>
-    <link href="https://googleapis.com" rel="stylesheet">
-    <style>
-        :root {
-            --mm2-color: #ff4d4d;
-            --adopt-color: #00ff88;
-            --accent-gold: #ffcc00;
-            --bg-main: #080808;
-            --glass: rgba(255, 255, 255, 0.05);
-        }
 
-        body {
-            margin: 0; padding: 0;
-            background: var(--bg-main);
-            color: #fff;
-            font-family: 'Montserrat', sans-serif;
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh;
-        }
+<meta charset="UTF-8">
 
-        #cart-btn {
-            position: fixed; top: 15px; right: 15px;
-            background: var(--accent-gold); color: #000;
-            padding: 12px 20px; border-radius: 50px;
-            cursor: pointer; font-weight: 900; z-index: 1000;
-            box-shadow: 0 10px 20px rgba(255, 204, 0, 0.2);
-            font-size: 14px;
-        }
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-        #cart-modal {
-            display: none; position: fixed;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(15, 15, 15, 0.98); backdrop-filter: blur(20px);
-            padding: 30px; border-radius: 30px; width: 90%; max-width: 450px; z-index: 1001;
-            border: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-        }
+<title>LootPets</title>
 
-        .overlay {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000;
-        }
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
 
-        #contact-btn {
-            display: none;
-            background: #0088cc;
-            color: white;
-            text-decoration: none;
-            padding: 15px;
-            border-radius: 12px;
-            font-weight: 900;
-            margin-top: 15px;
-        }
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
 
-        #selection-screen { text-align: center; margin-top: 80px; width: 100%; }
-        .cards-container { display: flex; flex-direction: column; gap: 30px; align-items: center; margin-bottom: 50px; }
-        .game-card { width: 90%; max-width: 450px; background: var(--glass); border-radius: 25px; padding: 20px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
-        .game-card:hover { transform: scale(1.02); background: rgba(255,255,255,0.1); }
-        .game-logo { width: 100%; height: 200px; object-fit: cover; border-radius: 15px; }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
 
-        .shop-view { display: none; width: 95%; max-width: 1200px; margin-top: 50px; padding-bottom: 100px; }
-        .shop-controls { display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
-        #sort-select { padding: 12px 15px; min-width: 210px; border-radius: 12px; background: #1a1a1a; color: #fff; border: 1px solid #444; font-family: inherit; font-weight: 700; cursor: pointer; }
-        .back-btn { background: #222; color: #fff; border: 1px solid #444; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
+<style>
 
-        .item-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .item-card { background: var(--glass); border-radius: 25px; padding: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
-        .item-card img { width: 100%; height: 180px; object-fit: contain; margin-bottom: 15px; border-radius: 10px; }
-        .item-price { font-size: 28px; font-weight: 900; margin: 15px 0; }
-        
-        .buy-button { width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
-        .buy-button:active { transform: scale(0.95); }
+/*==========================================
+RESET
+==========================================*/
 
-        .mm2-theme #shop-title, .mm2-theme .item-price { color: var(--mm2-color); }
-        .mm2-theme .buy-button { background: var(--mm2-color); color: white; }
-        .adopt-theme #shop-title, .adopt-theme .item-price { color: var(--adopt-color); }
-        .adopt-theme .buy-button { background: var(--adopt-color); color: #000; }
-
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #333; margin-bottom: 5px; }
-        .remove-item { color: #ff4d4d; cursor: pointer; font-weight: bold; padding: 5px; }
-    </style>
-</head>
-<body>
-
-    <div id="cart-btn" onclick="toggleCart()">🛒 <span id="cart-count">0</span> тов.</div>
-
-    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
-    <div id="cart-modal">
-        <h2 id="modal-title">Корзина</h2>
-        <div id="cart-list" style="max-height: 300px; overflow-y: auto; margin-bottom: 15px;"></div>
-        <h3 id="total-text">Итого: <span id="cart-total">0</span> ₽</h3>
-        
-        <button id="checkout-btn" class="buy-button" style="background:var(--accent-gold); color:#000" onclick="checkout()">Оформить заказ</button>
-        
-        <a href="https://t.me/bunnytail_info" id="contact-btn">НАПИСАТЬ ПРОДАВЦУ</a>
-    </div>
-
-    <div id="selection-screen">
-        <h1 style="text-transform: uppercase; letter-spacing: 3px;">Выберите игру</h1>
-        <div class="cards-container">
-            <div class="game-card" onclick="openShop('mm2')">
-                <img src="https://tr.rbxcdn.com/180DAY-fe7335c3ad752e84323cd81ae38de69a/768/432/Image/Webp/noFilter" class="game-logo">
-                <h2>Murder Mystery 2</h2>
-            </div>
-            <div class="game-card" onclick="openShop('adopt')">
-                <img src="https://tr.rbxcdn.com/180DAY-dc544ac25d03f485d6a58f79efc51ed2/768/432/Image/Webp/noFilter" class="game-logo">
-                <h2>Adopt Me!</h2>
-            </div>
-        </div>
-    </div>
-
-    <div id="shop-view" class="shop-view">
-        <div class="shop-controls">
-            <button class="back-btn" onclick="goBack()">← НАЗАД</button>
-            <select id="sort-select" onchange="applySort()">
-                <option value="default">Сортировка цен</option>
-                <option value="low">От дешевых</option>
-                <option value="high">От дорогих</option>
-            </select>
-        </div>
-        <h1 id="shop-title" style="text-align:center; font-size: 40px; margin-bottom: 30px;">STORE</h1>
-        <div id="items-container" class="item-grid"></div>
-    </div>
-
-    <script>
-        let cart = [];
-        let currentShopItems = [];
-        let currentGame = '';
-
-        const data = {
-            mm2: {
-                title: "MM2 WEAPONS",
-                items: [
-                ]
-            },
-            adopt: {
-                title: "ADOPT ME PETS",
-                items: [
-                    { name: "(R) Unicorn Ducky", price: 70, img: "https://static.wikia.nocookie.net/adoptme/images/2/27/Unicorn_Ducky.png/revision/latest?cb=20260522141128" },
-                    { name: "(R) Golden Unicorn", price: 50, img: "https://static.wikia.nocookie.net/adoptme/images/9/99/GoldenUnicorn_Pet.png/revision/latest/thumbnail/width/360/height/360?cb=20200321150328" },
-                    { name: "(N) Rubber Ducky", price: 5, img: "https://static.wikia.nocookie.net/adoptme/images/9/95/Rubber_Ducky.png/revision/latest?cb=20260522140842" },
-                    { name: "(R) Panda", price: 50, img: "https://static.wikia.nocookie.net/adoptme/images/1/13/Panda_Pet.png/revision/latest/thumbnail/width/360/height/360?cb=20200128231536" },
-                    { name: "Shadow Dragon Ducky", price: 45, img: "https://static.wikia.nocookie.net/adoptme/images/9/95/Shadow_Dragon_Ducky.png/revision/latest?cb=20260522141152" },
-                    { name: "(MR) Ocelot", price: 50, img: "https://cdn.nookazon.com/adoptme/items/11108831285.png" },
-                    { name: "(N) Blue Butterfly", price: 20, img: "https://static.wikia.nocookie.net/adoptme/images/4/4d/Blue_Butterfly.png/revision/latest?cb=20250602160645" },
-                    { name: "(NR) Black-Footed Ferret", price: 55, img: "https://static.wikia.nocookie.net/adoptme/images/0/07/Black-Footed_Ferret.png/revision/latest?cb=20260302181041" },
-                    { name: "(N) Fire Foal", price: 5, img: "https://static.wikia.nocookie.net/adoptme/images/8/81/Fire_Foal.png/revision/latest?cb=20260211181134" },
-                    { name: "(N) Shiba Inu", price: 10, img: "https://static.wikia.nocookie.net/adoptme/images/0/03/ShibaInu_Pet.png/revision/latest/thumbnail/width/360/height/360?cb=20240724204419" },
-                    { name: "(R) Sloth", price: 10, img: "https://cdn.nookazon.com/adoptme/items/3934251801.png" },
-                    { name: "(F) Wyvern", price: 20, img: "https://static.wikia.nocookie.net/adoptme/images/7/77/WyvernIcon.png/revision/latest/thumbnail/width/360/height/360?cb=20211117071654" },
-                    { name: "(N) Black Rhino", price: 5, img: "https://static.wikia.nocookie.net/adoptme/images/0/0f/Black_Rhino.png/revision/latest?cb=20260302180939" },
-                    { name: "(R) Birthday Butterfly 2024", price: 10, img: "https://static.wikia.nocookie.net/adoptme/images/f/f1/Birthday_Butterfly_2024_teaser.png/revision/latest?cb=20240715163002" },
-                    { name: "(N) Black Tiger", price: 5, img: "https://static.wikia.nocookie.net/adoptme/images/0/0e/Black_Tiger.png/revision/latest?cb=20260302180838" },
-                    { name: "(M) Rubber Ducky", price: 15, img: "https://static.wikia.nocookie.net/adoptme/images/9/95/Rubber_Ducky.png/revision/latest?cb=20260522140842" },
-                    { name: "x4 Rubber Ducky Box", price: 25, img: "https://static.wikia.nocookie.net/adoptme/images/4/45/Rubber_Ducky_Box.png/revision/latest?cb=20260522141011" },
-                    { name: "x1 Ride Potion", price: 45, img: "https://static.wikia.nocookie.net/adoptme/images/3/30/AM_Ride-A-Pet_Potion.png/revision/latest?cb=20220427134837" },
-                    { name: "x1 Fly Potion", price: 70, img: "https://static.wikia.nocookie.net/adoptme/images/2/2a/Fly-A-Pet_Potion.png/revision/latest?cb=20231206204208" }
-                ]
-            
-            }
-        };
-
-        function openShop(game) {
-            currentGame = game;
-            currentShopItems = [...data[game].items];
-            document.getElementById('selection-screen').style.display = 'none';
-            document.getElementById('shop-view').style.display = 'block';
-            document.getElementById('shop-view').className = 'shop-view ' + game + '-theme';
-            document.getElementById('shop-title').innerText = data[game].title;
-            renderItems(currentShopItems);
-        }
-
-        function goBack() {
-            document.getElementById('selection-screen').style.display = 'block';
-            document.getElementById('shop-view').style.display = 'none';
-            document.getElementById('sort-select').value = 'default';
-        }
-
-        function renderItems(items) {
-            const container = document.getElementById('items-container');
-            container.innerHTML = '';
-            items.forEach(item => {
-                container.innerHTML += `
-                    <div class="item-card">
-                        <img src="${item.img}" alt="${item.name}">
-                        <h3>${item.name}</h3>
-                        <div class="item-price">${item.price} ₽</div>
-                        <button class="buy-button" onclick="addToCart('${item.name}', ${item.price})">В корзину</button>
-                    </div>
-                `;
-            });
-        }
-
-        function applySort() {
-            const mode = document.getElementById('sort-select').value;
-            if (mode === 'low') {
-                currentShopItems.sort((a, b) => a.price - b.price);
-            } else if (mode === 'high') {
-                currentShopItems.sort((a, b) => b.price - a.price);
-            } else {
-                currentShopItems = [...data[currentGame].items];
-            }
-            renderItems(currentShopItems);
-        }
-
-        function addToCart(name, price) {
-            cart.push({ name, price });
-            updateCartUI();
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.length;
-            const list = document.getElementById('cart-list');
-            list.innerHTML = '';
-            let total = 0;
-
-            cart.forEach((item, index) => {
-                total += item.price;
-                list.innerHTML += `
-                    <div class="cart-item">
-                        <span>${item.name}</span>
-                        <span>${item.price} ₽ <span class="remove-item" onclick="removeFromCart(${index})">✕</span></span>
-                    </div>
-                `;
-            });
-            document.getElementById('cart-total').innerText = total;
-        }
-
-        function toggleCart() {
-            const modal = document.getElementById('cart-modal');
-            const overlay = document.getElementById('overlay');
-            const isVisible = modal.style.display === 'block';
-            
-            modal.style.display = isVisible ? 'none' : 'block';
-            overlay.style.display = isVisible ? 'none' : 'block';
-            
-            // Сбрасываем кнопку контакта при открытии, если корзина пуста
-            if (!isVisible && cart.length === 0) {
-                document.getElementById('contact-btn').style.display = 'none';
-                document.getElementById('checkout-btn').style.display = 'block';
-            }
-        }
-
-        function checkout() {
-    if (cart.length === 0) {
-        // Вместо alert можно просто ничего не делать или вывести текст в модалку
-        return; 
-    }
-    
-    // Скрываем кнопку оформления и показываем кнопку связи
-    document.getElementById('checkout-btn').style.display = 'none';
-    document.getElementById('contact-btn').style.display = 'block';
-    
-    // Строку с alert я убрал, теперь окно выпрыгивать не будет
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
 }
 
-    </script>
+html{
+
+scroll-behavior:smooth;
+
+}
+
+body{
+
+background:#06272b;
+
+color:#ffffff;
+
+overflow-x:hidden;
+
+min-height:100vh;
+
+}
+
+/*==========================================
+SCROLLBAR
+==========================================*/
+
+::-webkit-scrollbar{
+
+width:12px;
+
+}
+
+::-webkit-scrollbar-track{
+
+background:#08363b;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+background:#1dcfd7;
+
+border-radius:30px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+background:#32e6ee;
+
+}
+
+/*==========================================
+LINKS
+==========================================*/
+
+a{
+
+text-decoration:none;
+
+color:inherit;
+
+}
+
+/*==========================================
+BUTTONS
+==========================================*/
+
+button{
+
+font-family:'Poppins',sans-serif;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+/*==========================================
+CONTAINER
+==========================================*/
+
+.container{
+
+width:90%;
+
+max-width:1800px;
+
+margin:auto;
+
+}
+
+/*==========================================
+HEADER
+==========================================*/
+
+.header{
+
+position:sticky;
+
+top:20px;
+
+z-index:9999;
+
+width:90%;
+
+max-width:1800px;
+
+margin:25px auto;
+
+background:#4f7d79;
+
+border:3px solid white;
+
+border-radius:28px;
+
+padding:22px 40px;
+
+display:grid;
+
+grid-template-columns:1fr auto 1fr;
+
+align-items:center;
+
+backdrop-filter:blur(15px);
+
+box-shadow:0 20px 45px rgba(0,0,0,.30);
+
+}
+
+.left{
+
+justify-self:start;
+
+}
+
+.center{
+
+justify-self:center;
+
+}
+
+.right{
+
+justify-self:end;
+
+}
+
+/*==========================================
+LOGO
+==========================================*/
+
+.logo{
+
+font-size:64px;
+
+font-weight:800;
+
+user-select:none;
+
+cursor:pointer;
+
+white-space:nowrap;
+
+}
+
+.logo .loot{
+
+color:#39f0f2;
+
+}
+
+.logo .pets{
+
+color:#ffffff;
+
+}
+
+.logo:hover{
+
+transform:scale(1.03);
+
+}
+
+/*==========================================
+HEADER BUTTONS
+==========================================*/
+
+.profile-btn,
+.lang-btn{
+
+width:220px;
+
+height:68px;
+
+background:#07565f;
+
+color:white;
+
+border:3px solid white;
+
+border-radius:18px;
+
+font-size:20px;
+
+font-weight:700;
+
+}
+
+.profile-btn:hover,
+.lang-btn:hover{
+
+background:#0d7078;
+
+transform:translateY(-2px);
+
+}
+
+/*==========================================
+LANGUAGE MENU
+==========================================*/
+
+.language{
+
+position:relative;
+
+z-index:99999;
+
+}
+
+.lang-menu{
+
+position:absolute;
+
+top:82px;
+
+right:0;
+
+width:220px;
+
+background:#07565f;
+
+border:3px solid white;
+
+border-radius:18px;
+
+overflow:hidden;
+
+display:none;
+
+box-shadow:0 20px 45px rgba(0,0,0,.35);
+
+animation:menu .25s;
+
+z-index:999999;
+
+}
+
+.lang-menu.show{
+
+display:block;
+
+}
+
+@keyframes menu{
+
+from{
+
+opacity:0;
+
+transform:translateY(-10px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+.lang-item{
+
+padding:18px;
+
+text-align:center;
+
+font-size:18px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+.lang-item:hover{
+
+background:#0d7078;
+
+}
+
+.lang-item:not(:last-child){
+
+border-bottom:2px solid rgba(255,255,255,.18);
+
+}
+
+/*==========================================
+HERO
+==========================================*/
+
+.hero{
+
+width:90%;
+
+max-width:1800px;
+
+margin:80px auto;
+
+display:grid;
+
+grid-template-columns:1.1fr 1fr;
+
+gap:70px;
+
+align-items:center;
+
+}
+
+.hero-text h1{
+
+font-size:72px;
+
+font-weight:800;
+
+line-height:1.1;
+
+margin-bottom:25px;
+
+}
+
+.hero-text p{
+
+font-size:22px;
+
+line-height:1.8;
+
+color:#d7ffff;
+
+margin-bottom:40px;
+
+}
+
+.hero-buttons{
+
+display:flex;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+}
+
+.start-btn{
+
+width:230px;
+
+height:65px;
+
+background:#18b7c3;
+
+border:3px solid white;
+
+border-radius:18px;
+
+color:white;
+
+font-size:20px;
+
+font-weight:700;
+
+}
+
+.start-btn:hover{
+
+background:#2bd8e3;
+
+transform:translateY(-3px);
+
+}
+
+.more-btn{
+
+width:210px;
+
+height:65px;
+
+background:transparent;
+
+border:3px solid white;
+
+border-radius:18px;
+
+color:white;
+
+font-size:20px;
+
+font-weight:700;
+
+}
+
+.more-btn:hover{
+
+background:white;
+
+color:#06272b;
+
+}
+
+.hero-image{
+
+display:flex;
+
+justify-content:center;
+
+}
+
+.hero-image img{
+
+width:100%;
+
+max-width:650px;
+
+border-radius:30px;
+
+border:3px solid white;
+
+box-shadow:0 25px 60px rgba(0,0,0,.35);
+
+transition:.35s;
+
+}
+
+.hero-image img:hover{
+
+transform:scale(1.02);
+
+}
+
+/*==========================================
+SECTION TITLE
+==========================================*/
+
+.section-title{
+
+text-align:center;
+
+margin:120px 0 60px;
+
+}
+
+.section-title h2{
+
+font-size:52px;
+
+font-weight:800;
+
+margin-bottom:15px;
+
+}
+
+.section-title p{
+
+font-size:20px;
+
+color:#cfeeee;
+
+}
+
+/*==========================================
+MODAL
+==========================================*/
+
+.modal{
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.75);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+opacity:0;
+
+visibility:hidden;
+
+transition:.3s;
+
+z-index:1000000;
+
+}
+
+.modal.show{
+
+opacity:1;
+
+visibility:visible;
+
+}
+
+.modal-window{
+
+width:500px;
+
+max-width:95%;
+
+background:#08383d;
+
+border:3px solid white;
+
+border-radius:30px;
+
+padding:35px;
+
+position:relative;
+
+box-shadow:0 30px 70px rgba(0,0,0,.45);
+
+}
+
+/*==========================================
+MODAL CONTENT
+==========================================*/
+
+.modal-logo{
+
+text-align:center;
+
+font-size:44px;
+
+font-weight:800;
+
+margin-bottom:15px;
+
+}
+
+.modal h2{
+
+text-align:center;
+
+font-size:34px;
+
+margin-bottom:10px;
+
+}
+
+.modal-subtitle{
+
+text-align:center;
+
+color:#d7ffff;
+
+margin-bottom:30px;
+
+line-height:1.7;
+
+}
+
+.close-modal{
+
+position:absolute;
+
+top:20px;
+
+right:22px;
+
+background:none;
+
+border:none;
+
+color:white;
+
+font-size:30px;
+
+cursor:pointer;
+
+}
+
+.input-group{
+
+margin-bottom:22px;
+
+}
+
+.input-group label{
+
+display:block;
+
+margin-bottom:8px;
+
+font-weight:600;
+
+}
+
+.input-group input{
+
+width:100%;
+
+height:58px;
+
+padding:0 18px;
+
+background:#135b55;
+
+border:3px solid white;
+
+border-radius:15px;
+
+font-size:17px;
+
+color:white;
+
+}
+
+.input-group input::placeholder{
+
+color:#bfecec;
+
+}
+
+.register-btn{
+
+width:100%;
+
+height:60px;
+
+background:#18b7c3;
+
+border:3px solid white;
+
+border-radius:15px;
+
+font-size:20px;
+
+font-weight:700;
+
+color:white;
+
+}
+
+.register-btn:hover{
+
+background:#2bd8e3;
+
+}
+
+.modal-bottom{
+
+margin-top:22px;
+
+text-align:center;
+
+}
+
+.modal-bottom span{
+
+color:#39f0f2;
+
+font-weight:700;
+
+cursor:pointer;
+
+}
+
+/*==========================================
+GAMES
+==========================================*/
+
+.games{
+
+width:90%;
+
+max-width:1800px;
+
+margin:40px auto 100px;
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:35px;
+
+}
+
+.game-card{
+
+background:#135b55;
+
+border:3px solid white;
+
+border-radius:28px;
+
+overflow:hidden;
+
+transition:.3s;
+
+box-shadow:0 18px 45px rgba(0,0,0,.30);
+
+}
+
+.game-card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.game-card img{
+
+width:100%;
+
+height:340px;
+
+object-fit:cover;
+
+display:block;
+
+}
+
+.game-info{
+
+padding:28px;
+
+}
+
+.game-info h3{
+
+font-size:34px;
+
+margin-bottom:12px;
+
+}
+
+.game-info p{
+
+font-size:18px;
+
+color:#d7ffff;
+
+line-height:1.7;
+
+margin-bottom:25px;
+
+}
+
+.game-btn{
+
+width:190px;
+
+height:55px;
+
+background:#18b7c3;
+
+border:3px solid white;
+
+border-radius:15px;
+
+font-size:18px;
+
+font-weight:700;
+
+color:white;
+
+}
+
+.game-btn:hover{
+
+background:#2bd8e3;
+
+}
+
+/*==========================================
+FEATURE CARDS
+==========================================*/
+
+.features{
+
+width:90%;
+
+max-width:1800px;
+
+margin:110px auto;
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:25px;
+
+}
+
+.feature-card{
+
+background:#135b55;
+
+border:3px solid white;
+
+border-radius:25px;
+
+padding:30px;
+
+text-align:center;
+
+transition:.3s;
+
+}
+
+.feature-card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.feature-icon{
+
+font-size:48px;
+
+margin-bottom:20px;
+
+}
+
+.feature-card h3{
+
+font-size:28px;
+
+margin-bottom:15px;
+
+}
+
+.feature-card p{
+
+color:#d7ffff;
+
+line-height:1.7;
+
+}
+
+/*==========================================
+FAQ
+==========================================*/
+
+.faq{
+
+width:90%;
+
+max-width:1800px;
+
+margin:120px auto;
+
+display:grid;
+
+gap:25px;
+
+}
+
+.faq-item{
+
+background:#135b55;
+
+border:3px solid white;
+
+border-radius:25px;
+
+padding:30px;
+
+transition:.3s;
+
+}
+
+.faq-item:hover{
+
+transform:translateY(-5px);
+
+}
+
+.faq-item h3{
+
+font-size:28px;
+
+margin-bottom:15px;
+
+}
+
+.faq-item p{
+
+font-size:18px;
+
+color:#d7ffff;
+
+line-height:1.8;
+
+}
+
+/*==========================================
+FOOTER
+==========================================*/
+
+.footer{
+
+margin-top:120px;
+
+padding:70px 20px;
+
+background:#08383d;
+
+border-top:3px solid white;
+
+text-align:center;
+
+}
+
+.footer-logo{
+
+font-size:48px;
+
+font-weight:800;
+
+margin-bottom:20px;
+
+}
+
+.footer-links{
+
+display:flex;
+
+justify-content:center;
+
+flex-wrap:wrap;
+
+gap:30px;
+
+margin-bottom:25px;
+
+}
+
+.footer-links a{
+
+transition:.25s;
+
+font-weight:500;
+
+}
+
+.footer-links a:hover{
+
+color:#39f0f2;
+
+}
+
+.footer-copy{
+
+color:#bfecec;
+
+font-size:16px;
+
+}
+
+/*==========================================
+TOP BUTTON
+==========================================*/
+
+.top-btn{
+
+position:fixed;
+
+right:30px;
+
+bottom:30px;
+
+width:60px;
+
+height:60px;
+
+border-radius:50%;
+
+border:3px solid white;
+
+background:#18b7c3;
+
+color:white;
+
+font-size:24px;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+cursor:pointer;
+
+opacity:0;
+
+visibility:hidden;
+
+transition:.3s;
+
+z-index:9999;
+
+}
+
+.top-btn.show{
+
+opacity:1;
+
+visibility:visible;
+
+}
+
+.top-btn:hover{
+
+transform:translateY(-5px);
+
+background:#2bd8e3;
+
+}
+
+/*==========================================
+PRELOADER
+==========================================*/
+
+#preloader{
+
+position:fixed;
+
+left:0;
+
+top:0;
+
+width:100%;
+
+height:100%;
+
+background:#06272b;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:9999999;
+
+transition:.5s;
+
+}
+
+#preloader.hide{
+
+opacity:0;
+
+visibility:hidden;
+
+}
+
+.loader-logo{
+
+font-size:72px;
+
+font-weight:800;
+
+animation:pulse 1.2s infinite;
+
+}
+
+@keyframes pulse{
+
+0%{transform:scale(1);}
+
+50%{transform:scale(1.08);}
+
+100%{transform:scale(1);}
+
+}
+
+/*==========================================
+RESPONSIVE
+==========================================*/
+
+@media(max-width:1100px){
+
+.header{
+
+grid-template-columns:1fr;
+
+gap:20px;
+
+}
+
+.left,
+.center,
+.right{
+
+justify-self:center;
+
+}
+
+.hero{
+
+grid-template-columns:1fr;
+
+text-align:center;
+
+}
+
+.hero-buttons{
+
+justify-content:center;
+
+}
+
+.games{
+
+grid-template-columns:1fr;
+
+}
+
+.features{
+
+grid-template-columns:1fr;
+
+}
+
+.logo{
+
+font-size:48px;
+
+}
+
+.hero-text h1{
+
+font-size:48px;
+
+}
+
+.hero-text p{
+
+font-size:19px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+    <!--==========================================
+PRELOADER
+===========================================-->
+
+<div id="preloader">
+
+    <div class="loader-logo">
+
+        <span class="loot">Loot</span><span class="pets">Pets</span>
+
+    </div>
+
+</div>
+
+<!--==========================================
+REGISTER
+===========================================-->
+
+<div class="modal" id="registerModal">
+
+    <div class="modal-window">
+
+        <button class="close-modal" id="closeRegister">✕</button>
+
+        <div class="modal-logo">
+
+            <span class="loot">Loot</span><span class="pets">Pets</span>
+
+        </div>
+
+        <h2>Создать аккаунт</h2>
+
+        <p class="modal-subtitle">
+
+            Создайте аккаунт LootPets
+
+        </p>
+
+        <div class="input-group">
+
+            <label>Ник</label>
+
+            <input
+            id="registerNickname"
+            type="text"
+            placeholder="Введите ник">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Email</label>
+
+            <input
+            id="registerEmail"
+            type="email"
+            placeholder="Введите Email">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Пароль</label>
+
+            <input
+            id="registerPassword"
+            type="password"
+            placeholder="Введите пароль">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Повторите пароль</label>
+
+            <input
+            id="registerPassword2"
+            type="password"
+            placeholder="Повторите пароль">
+
+        </div>
+
+        <button
+        class="register-btn"
+        id="registerButton">
+
+            Зарегистрироваться
+
+        </button>
+
+        <div class="modal-bottom">
+
+            Уже есть аккаунт?
+
+            <span id="openLogin">
+
+                Войти
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--==========================================
+LOGIN
+===========================================-->
+
+<div class="modal" id="loginModal">
+
+    <div class="modal-window">
+
+        <button class="close-modal" id="closeLogin">✕</button>
+
+        <div class="modal-logo">
+
+            <span class="loot">Loot</span><span class="pets">Pets</span>
+
+        </div>
+
+        <h2>Вход</h2>
+
+        <p class="modal-subtitle">
+
+            Войдите в свой аккаунт
+
+        </p>
+
+        <div class="input-group">
+
+            <label>Ник или Email</label>
+
+            <input
+            id="loginUser"
+            type="text"
+            placeholder="Введите ник или Email">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Пароль</label>
+
+            <input
+            id="loginPassword"
+            type="password"
+            placeholder="Введите пароль">
+
+        </div>
+
+        <button
+        class="register-btn"
+        id="loginButton">
+
+            Войти
+
+        </button>
+
+        <div class="modal-bottom">
+
+            Нет аккаунта?
+
+            <span id="openRegister">
+
+                Зарегистрироваться
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!--==========================================
+HEADER
+===========================================-->
+
+<header class="header">
+
+    <div class="left">
+
+        <button class="profile-btn">
+
+            👤 Профиль
+
+        </button>
+
+    </div>
+
+    <div class="center">
+
+        <div class="logo">
+
+            <span class="loot">Loot</span><span class="pets">Pets</span>
+
+        </div>
+
+    </div>
+
+    <div class="right">
+
+        <div class="language">
+
+            <button
+            class="lang-btn"
+            id="langButton">
+
+                Русский ▼
+
+            </button>
+
+            <div
+            class="lang-menu"
+            id="langMenu">
+
+                <div class="lang-item">Русский</div>
+
+                <div class="lang-item">English</div>
+
+                <div class="lang-item">Українська</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+<!--==========================================
+HERO
+===========================================-->
+
+<section class="hero">
+
+    <div class="hero-text">
+
+        <span class="hero-badge">
+
+            🛡️ Безопасный маркетплейс игровых предметов
+
+        </span>
+
+        <h1>
+
+            Покупайте и продавайте игровые предметы безопасно
+
+        </h1>
+
+        <p>
+
+            LootPets — современный маркетплейс, где игроки смогут покупать и продавать игровые предметы с безопасными сделками, удобным интерфейсом и быстрой поддержкой.
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <button class="start-btn">
+
+                Начать покупки
+
+            </button>
+
+            <button class="more-btn">
+
+                Подробнее
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="hero-image">
+
+        <img src="images/hero.png" alt="LootPets">
+
+    </div>
+
+</section>
+
+<!--==========================================
+POPULAR GAMES
+===========================================-->
+
+<div class="section-title">
+
+    <h2>
+
+        Популярные игры
+
+    </h2>
+
+    <p>
+
+        Выберите игру и перейдите в соответствующий раздел.
+
+    </p>
+
+</div>
+
+<section class="games">
+
+    <div class="game-card">
+
+        <img src="https://i.pinimg.com/736x/e6/71/bf/e671bf2faba205700d17a6d33197e64f.jpg" alt="Robux">
+
+        <div class="game-info">
+
+            <h3>
+
+                Robux
+
+            </h3>
+
+            <p>
+
+                Покупайте Robux быстро, удобно и безопасно.
+
+            </p>
+
+            <button class="game-btn">
+
+                Открыть →
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="game-card">
+
+        <img src="https://i.pinimg.com/736x/87/04/2e/87042e57a8eafa2cd69e6bbe7c235735.jpg" alt="Murder Mystery 2">
+
+        <div class="game-info">
+
+            <h3>
+
+                Murder Mystery 2
+
+            </h3>
+
+            <p>
+
+                Godly • Ancient • Vintage • Chroma
+
+            </p>
+
+            <button class="game-btn">
+
+                Открыть →
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!--==========================================
+ADVANTAGES
+===========================================-->
+
+<div class="section-title">
+
+    <h2>
+
+        Почему LootPets?
+
+    </h2>
+
+    <p>
+
+        Всё необходимое для безопасной торговли.
+
+    </p>
+
+</div>
+
+<section class="features">
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+
+            ⚡
+
+        </div>
+
+        <h3>
+
+            Быстрая доставка
+
+        </h3>
+
+        <p>
+
+            После запуска большинство заказов будет выполняться максимально быстро.
+
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+
+            🔒
+
+        </div>
+
+        <h3>
+
+            Безопасные сделки
+
+        </h3>
+
+        <p>
+
+            Каждая сделка будет защищена системой LootPets.
+
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+
+            💬
+
+        </div>
+
+        <h3>
+
+            Поддержка
+
+        </h3>
+
+        <p>
+
+            Наша команда всегда поможет при возникновении вопросов.
+
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+
+            ⭐
+
+        </div>
+
+        <h3>
+
+            Современная платформа
+
+        </h3>
+
+        <p>
+
+            Мы постоянно улучшаем сайт и добавляем новые возможности.
+
+        </p>
+
+    </div>
+
+</section>
+
+<!--==========================================
+FAQ
+===========================================-->
+
+<div class="section-title">
+
+    <h2>
+
+        Часто задаваемые вопросы
+
+    </h2>
+
+    <p>
+
+        Ответы на самые популярные вопросы.
+
+    </p>
+
+</div>
+
+<section class="faq">
+
+    <div class="faq-item">
+
+        <h3>
+
+            Как создать аккаунт?
+
+        </h3>
+
+        <p>
+
+            Нажмите кнопку «Профиль», заполните форму регистрации и подтвердите Email после запуска системы подтверждения.
+
+        </p>
+
+    </div>
+
+    <div class="faq-item">
+
+        <h3>
+
+            Какие игры будут доступны?
+
+        </h3>
+
+        <p>
+
+            На старте будут доступны Robux и Murder Mystery 2. Позже список игр будет постепенно расширяться.
+
+        </p>
+
+    </div>
+
+    <div class="faq-item">
+
+        <h3>
+
+            Безопасны ли сделки?
+
+        </h3>
+
+        <p>
+
+            Да. После запуска все сделки будут проходить через систему защиты LootPets.
+
+        </p>
+
+    </div>
+
+</section>
+
+<!--==========================================
+NEWS
+===========================================-->
+
+<div class="section-title">
+
+    <h2>
+
+        Последние новости
+
+    </h2>
+
+    <p>
+
+        Следите за развитием LootPets.
+
+    </p>
+
+</div>
+
+<section class="features">
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+
+            🚀
+
+        </div>
+
+        <h3>
+
+            Начало разработки
+
+        </h3>
+
+        <p>
+
+            Мы активно разрабатываем LootPets и постоянно улучшаем дизайн и функциональность.
+
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+
+            📧
+
+        </div>
+
+        <h3>
+
+            Email подтверждение
+
+        </h3>
+
+        <p>
+
+            Скоро появится подтверждение регистрации кодом, который будет отправляться на Email.
+
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+
+            👤
+
+        </div>
+
+        <h3>
+
+            Личный кабинет
+
+        </h3>
+
+        <p>
+
+            Пользователи смогут просматривать покупки, продажи и изменять настройки профиля.
+
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <div class="feature-icon">
+
+            🛒
+
+        </div>
+
+        <h3>
+
+            Маркетплейс
+
+        </h3>
+
+        <p>
+
+            После запуска продавцы смогут размещать товары, а покупатели — безопасно их приобретать.
+
+        </p>
+
+    </div>
+
+</section>
+
+<!--==========================================
+FOOTER
+===========================================-->
+
+<footer class="footer">
+
+    <div class="footer-logo">
+
+        <span class="loot">Loot</span><span class="pets">Pets</span>
+
+    </div>
+
+    <div class="footer-links">
+
+        <a href="#">Главная</a>
+
+        <a href="#">FAQ</a>
+
+        <a href="#">Новости</a>
+
+        <a href="#">Поддержка</a>
+
+        <a href="#">Политика конфиденциальности</a>
+
+    </div>
+
+    <div class="footer-copy">
+
+        © 2026 LootPets. Все права защищены.
+
+    </div>
+
+</footer>
+
+<!--==========================================
+BUTTON UP
+===========================================-->
+
+<button id="topButton" class="top-btn">
+
+↑
+
+</button>
+
+<script>
+
+/*==========================================
+LANGUAGE MENU
+==========================================*/
+
+const langButton=document.getElementById("langButton");
+const langMenu=document.getElementById("langMenu");
+
+langButton.addEventListener("click",(e)=>{
+
+e.stopPropagation();
+
+langMenu.classList.toggle("show");
+
+});
+
+document.querySelectorAll(".lang-item").forEach(item=>{
+
+item.addEventListener("click",function(){
+
+langButton.innerHTML=this.innerHTML+" ▼";
+
+langMenu.classList.remove("show");
+
+/* Позже здесь будет переход
+на другую языковую страницу */
+
+});
+
+});
+
+document.addEventListener("click",(e)=>{
+
+if(!e.target.closest(".language")){
+
+langMenu.classList.remove("show");
+
+}
+
+});
+
+/*==========================================
+REGISTER / LOGIN
+==========================================*/
+
+const registerModal=document.getElementById("registerModal");
+
+const loginModal=document.getElementById("loginModal");
+
+const profileBtn=document.querySelector(".profile-btn");
+
+const closeRegister=document.getElementById("closeRegister");
+
+const closeLogin=document.getElementById("closeLogin");
+
+const openLogin=document.getElementById("openLogin");
+
+const openRegister=document.getElementById("openRegister");
+
+profileBtn.addEventListener("click",()=>{
+
+window.location.href="Login.html";
+
+});
+
+closeRegister.addEventListener("click",()=>{
+
+registerModal.classList.remove("show");
+
+});
+
+closeLogin.addEventListener("click",()=>{
+
+loginModal.classList.remove("show");
+
+});
+
+openLogin.addEventListener("click",()=>{
+
+registerModal.classList.remove("show");
+
+loginModal.classList.add("show");
+
+});
+
+openRegister.addEventListener("click",()=>{
+
+loginModal.classList.remove("show");
+
+registerModal.classList.add("show");
+
+});
+
+registerModal.addEventListener("click",(e)=>{
+
+if(e.target===registerModal){
+
+registerModal.classList.remove("show");
+
+}
+
+});
+
+loginModal.addEventListener("click",(e)=>{
+
+if(e.target===loginModal){
+
+loginModal.classList.remove("show");
+
+}
+
+});
+
+/*==========================================
+HERO BUTTONS
+==========================================*/
+
+document.querySelector(".start-btn").addEventListener("click",()=>{
+
+document.querySelector(".games").scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+});
+
+document.querySelector(".more-btn").addEventListener("click",()=>{
+
+document.querySelector(".features").scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+});
+
+
+/*==========================================
+REGISTER VALIDATION
+==========================================*/
+
+const registerButton=document.getElementById("registerButton");
+
+registerButton.addEventListener("click",()=>{
+
+const nickname=document.getElementById("registerNickname").value.trim();
+
+const email=document.getElementById("registerEmail").value.trim();
+
+const password=document.getElementById("registerPassword").value;
+
+const password2=document.getElementById("registerPassword2").value;
+
+if(nickname===""){
+
+alert("Введите ник.");
+
+return;
+
+}
+
+if(nickname.length<3){
+
+alert("Ник должен содержать минимум 3 символа.");
+
+return;
+
+}
+
+const emailPattern=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if(!emailPattern.test(email)){
+
+alert("Введите корректный Email.");
+
+return;
+
+}
+
+if(password.length<6){
+
+alert("Пароль должен содержать минимум 6 символов.");
+
+return;
+
+}
+
+if(password!==password2){
+
+alert("Пароли не совпадают.");
+
+return;
+
+}
+
+/*==========================================
+TEMP REGISTER
+==========================================*/
+
+alert(
+"Регистрация прошла успешно!\n\n" +
+"Позже здесь будет:\n" +
+"• Проверка свободного ника\n" +
+"• Отправка кода на Email\n" +
+"• Сохранение пользователя в базе данных"
+);
+
+registerModal.classList.remove("show");
+
+});
+
+/*==========================================
+LOGIN
+==========================================*/
+
+const loginButton=document.getElementById("loginButton");
+
+loginButton.addEventListener("click",()=>{
+
+const user=document.getElementById("loginUser").value.trim();
+
+const pass=document.getElementById("loginPassword").value.trim();
+
+if(user===""){
+
+alert("Введите ник или Email.");
+
+return;
+
+}
+
+if(pass===""){
+
+alert("Введите пароль.");
+
+return;
+
+}
+
+alert("После подключения PHP здесь будет вход в аккаунт.");
+
+loginModal.classList.remove("show");
+
+});
+
+/*==========================================
+BACK TO TOP
+==========================================*/
+
+const topButton=document.getElementById("topButton");
+
+window.addEventListener("scroll",()=>{
+
+if(window.scrollY>500){
+
+topButton.classList.add("show");
+
+}else{
+
+topButton.classList.remove("show");
+
+}
+
+});
+
+topButton.addEventListener("click",()=>{
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+});
+
+/*==========================================
+PRELOADER
+==========================================*/
+
+window.addEventListener("load",()=>{
+
+const preloader=document.getElementById("preloader");
+
+setTimeout(()=>{
+
+preloader.classList.add("hide");
+
+},700);
+
+});
+
+/*==========================================
+FUTURE READY
+==========================================*/
+
+// Здесь позже будет:
+//
+// ✓ PHP
+// ✓ MySQL
+// ✓ Проверка свободного ника
+// ✓ Подтверждение Email кодом
+// ✓ Авторизация
+// ✓ Профиль
+// ✓ Настройки
+// ✓ История покупок
+// ✓ История продаж
+// ✓ Панель продавца
+// ✓ Админ-панель
+
+/*==========================================
+LOGO CLICK
+==========================================*/
+
+const logo=document.querySelector(".logo");
+
+logo.addEventListener("click",()=>{
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+});
+
+/*==========================================
+KEYBOARD SHORTCUTS
+==========================================*/
+
+document.addEventListener("keydown",(e)=>{
+
+if(e.key==="Escape"){
+
+registerModal.classList.remove("show");
+
+loginModal.classList.remove("show");
+
+langMenu.classList.remove("show");
+
+}
+
+});
+
+/*==========================================
+COMING SOON
+==========================================*/
+
+// Следующие функции будут добавлены позже:
+//
+// ✓ PHP
+// ✓ MySQL
+// ✓ Проверка свободного ника
+// ✓ Отправка кода подтверждения Email
+// ✓ Восстановление пароля
+// ✓ Личный кабинет
+// ✓ Настройки профиля
+// ✓ Уведомления
+// ✓ Панель продавца
+// ✓ Админ-панель
+// ✓ История покупок
+// ✓ История продаж
+// ✓ Онлайн-чат поддержки
+// ✓ Партнёрская программа
+// ✓ Система отзывов
+// ✓ Поиск по товарам
+// ✓ Избранные товары
+// ✓ Корзина
+// ✓ Платёжная система
+
+console.log("LootPets успешно загружен.");
+
+</script>
+
 </body>
+
 </html>
